@@ -45,6 +45,14 @@ MESSAGES: Dict[str, Dict[str, str]] = {
     },
     'warning': {
         'sys_exit': 'sys.exit() causes WeeChat to exit itself',
+        'deprecated_hook_completion_get_string': (
+            'function hook_completion_get_string is deprecated '
+            'since WeeChat 2.9 and must be replaced by completion_get_string'
+        ),
+        'deprecated_hook_completion_list_add': (
+            'function hook_completion_list_add is deprecated '
+            'since WeeChat 2.9 and must be replaced by completion_list_add'
+        ),
     },
     'info': {
         'unneeded_shebang': 'shebang not needed',
@@ -162,6 +170,19 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             for line_no, _ in python2_bin:
                 self.message('error', 'python2_bin', line=line_no)
 
+    def check_deprecated_functions(self):
+        """Check if deprecated functions are used."""
+        # hook_completion_get_string deprecated since WeeChat 2.9
+        func = self.search_regex(r'hook_completion_get_string')
+        for line_no, _ in func:
+            self.message('warning', 'deprecated_hook_completion_get_string',
+                         line=line_no)
+        # hook_completion_list_add deprecated since WeeChat 2.9
+        func = self.search_regex(r'hook_completion_list_add')
+        for line_no, _ in func:
+            self.message('warning', 'deprecated_hook_completion_list_add',
+                         line=line_no)
+
     def check(self):
         """Perform checks on the script."""
         if not self.script:
@@ -172,6 +193,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         self.check_infolist()
         self.check_exit()
         self.check_python2_bin()
+        self.check_deprecated_functions()
 
     def print_report(self):
         """Print report, if any."""
