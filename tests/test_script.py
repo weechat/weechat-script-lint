@@ -96,5 +96,5 @@ def test_script_empty_file():
     assert script.script == ''
     assert len(script.lines) > 0
     script.check()
-    assert str(script) == ''
-    assert script.count == {'error': 0, 'warning': 0, 'info': 0}
+    assert str(script)
+    assert script.count == {'error': 1, 'warning': 0, 'info': 0}

@@ -22,6 +22,7 @@
 
 from typing import Dict, List, Tuple
 
+import inspect
 import pathlib
 import re
 
@@ -128,17 +129,17 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
                 occur.append((i + 1, match))
         return occur
 
-    def check_shebang(self):
+    def _check_shebang(self):
         """Check if a sheband is present."""
         if self.script.startswith('#!'):
             self.message('info', 'unneeded_shebang')
 
-    def check_email(self):
+    def _check_email(self):
         """Check if an e-mail is present."""
         if not re.search(EMAIL_REGEX, self.script):
             self.message('error', 'missing_email')
 
-    def check_weechat_site(self):
+    def _check_weechat_site(self):
         """Check if there are occurrences of wrong links to WeeChat site."""
         # http required, www not needed
         links = self.search_regex(
@@ -148,7 +149,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         for line_no, link in links:
             self.message('info', 'url_weechat', line=line_no, link=link)
 
-    def check_infolist(self):
+    def _check_infolist(self):
         """Check if infolist_free is called."""
         list_infolist_get = self.search_regex('infolist_get')
         count_infolist_free = self.script.count('infolist_free')
@@ -156,21 +157,21 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             for line_no, _ in list_infolist_get:
                 self.message('error', 'missing_infolist_free', line=line_no)
 
-    def check_exit(self):
+    def _check_exit(self):
         """Check if an exit from the script can exit WeeChat."""
         if self.path.suffix == '.py':
             sys_exits = self.search_regex(r'sys\.exit')
             for line_no, _ in sys_exits:
                 self.message('warning', 'sys_exit', line=line_no)
 
-    def check_python2_bin(self):
+    def _check_python2_bin(self):
         """Check if the info "python2_bin" is used."""
         if self.path.suffix == '.py':
             python2_bin = self.search_regex(r'python2_bin')
             for line_no, _ in python2_bin:
                 self.message('error', 'python2_bin', line=line_no)
 
-    def check_deprecated_functions(self):
+    def _check_deprecated_functions(self):
         """Check if deprecated functions are used."""
         # hook_completion_get_string deprecated since WeeChat 2.9
         func = self.search_regex(r'hook_completion_get_string')
@@ -185,15 +186,10 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def check(self):
         """Perform checks on the script."""
-        if not self.script:
-            return
-        self.check_shebang()
-        self.check_email()
-        self.check_weechat_site()
-        self.check_infolist()
-        self.check_exit()
-        self.check_python2_bin()
-        self.check_deprecated_functions()
+        methods = inspect.getmembers(self, predicate=inspect.ismethod)
+        for name, method in methods:
+            if name.startswith('_check_'):
+                method()
 
     def print_report(self):
         """Print report, if any."""
