@@ -1,0 +1,15 @@
+#
+# Author: Sébastien Helleu <flashcode@flashtux.org>
+#
+
+"""A WeeChat script."""
+
+import sys
+
+import weechat
+
+if __name__ == '__main__':
+    if weechat.register('script', 'author', '0.1', 'GPL3', 'desc', '', ''):
+        infolist = weechat.infolist_get('buffer', '', '')
+        weechat.infolist_free(infolist)
+        sys.exit(1)

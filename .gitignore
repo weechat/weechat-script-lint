@@ -1,0 +1,6 @@
+.coverage
+*.pyc
+*.pyo
+build/
+dist/
+weechat_script_lint.egg-info/
