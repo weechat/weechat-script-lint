@@ -151,6 +151,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_infolist(self):
         """Check if infolist_free is called."""
+        # if infolist_get is called, infolist_free must be called
         list_infolist_get = self.search_regex('infolist_get')
         count_infolist_free = self.script.count('infolist_free')
         if list_infolist_get and not count_infolist_free:
@@ -160,6 +161,9 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_exit(self):
         """Check if an exit from the script can exit WeeChat."""
         if self.path.suffix == '.py':
+            # Python sys.exit() function must never be called; it is only
+            # a warning because it can be allowed when the import of weechat
+            # module fails, which means the script is not running in WeeChat
             sys_exits = self.search_regex(r'sys\.exit')
             for line_no, _ in sys_exits:
                 self.message('warning', 'sys_exit', line=line_no)
