@@ -24,16 +24,14 @@ check: lint test
 lint: flake8 pylint mypy
 
 flake8:
-	flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-	flake8 . --count --exit-zero --max-complexity=10 --statistics
+	flake8 weechat_script_lint tests/*.py --count --select=E9,F63,F7,F82 --show-source --statistics
+	flake8 weechat_script_lint tests/*.py --count --exit-zero --max-complexity=10 --statistics
 
 pylint:
-	pylint weechat_script_lint
-	pylint tests/*.py
+	pylint weechat_script_lint tests/*.py
 
 mypy:
-	mypy weechat_script_lint
-	mypy tests/*.py
+	mypy weechat_script_lint tests/*.py
 
 test:
 	pytest -vv --cov-report term-missing --cov=weechat_script_lint tests
