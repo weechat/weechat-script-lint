@@ -4,10 +4,11 @@
 
 """A WeeChat script."""
 
-import sys
-
 import weechat
 
 if __name__ == '__main__':
     if weechat.register('script', 'author', '0.1', 'GPL3', 'desc', '', ''):
-        sys.exit(1)
+        color_name = weechat.info_get(
+            'irc_nick_color_name',
+            'nick',
+        )

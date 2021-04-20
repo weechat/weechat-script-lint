@@ -54,6 +54,14 @@ MESSAGES: Dict[str, Dict[str, str]] = {
             'function hook_completion_list_add is deprecated '
             'since WeeChat 2.9 and must be replaced by completion_list_add'
         ),
+        'deprecated_irc_nick_color': (
+            'info irc_nick_color is deprecated since WeeChat 1.5 '
+            'and must be replaced by nick_color'
+        ),
+        'deprecated_irc_nick_color_name': (
+            'info irc_nick_color_name is deprecated since WeeChat 1.5 '
+            'and must be replaced by nick_color_name'
+        ),
     },
     'info': {
         'unneeded_shebang': 'shebang not needed',
@@ -85,7 +93,6 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         self.messages: List[str] = []
         self.count: Dict[str, int] = {label: 0 for label in LEVEL_LABELS}
         self.script: str = self.path.read_text()
-        self.lines: List[str] = self.script.split('\n')
 
     def __str__(self) -> str:
         """Return string with warnings/errors found."""
@@ -109,9 +116,8 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
                              f'{text}')
         self.count[level] += 1
 
-    def search_regex(self,
-                     regex: str,
-                     flags: int = 0) -> List[Tuple[int, re.Match]]:
+    def search_regex(self, regex: str, flags: int = 0,
+                     max_lines: int = 1) -> List[Tuple[int, str]]:
         """
         Search a regular expression in each line of the script.
         A same line can be returned multiple times, if the string appears
@@ -119,15 +125,32 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
         :param regex: regular expression to search
         :param flags: flags for call to re.compile()
+        :param max_lines: max number of lines in each string found
         :return: list of tuples: (line_number, match)
         """
         pattern = re.compile(regex, flags=flags)
         occur = []
-        for i, line in enumerate(self.lines):
-            matches = pattern.findall(line)
-            for match in matches:
-                occur.append((i + 1, match))
+        for match in pattern.finditer(self.script):
+            match_str = match.group()
+            match_lines = match_str.count('\n') + 1
+            if match_lines <= max_lines:
+                line = match.string[:match.start()].count('\n') + 1
+                occur.append((line, match_str))
         return occur
+
+    def search_func_arg(self, function: str, argument: str, flags: int = 0,
+                        max_lines: int = 2) -> List[Tuple[int, str]]:
+        """
+        Search a call to a function with the given argument.
+
+        :param function: function (regex)
+        :param argument: argument (regex)
+        :param flags: flags for call to re.compile()
+        :param max_lines: max number of lines in each string found
+        :return: list of tuples: (line_number, match)
+        """
+        regex = fr'{function}[\s(]*{argument}'
+        return self.search_regex(regex, flags=flags, max_lines=max_lines)
 
     def _check_shebang(self):
         """Check if a sheband is present."""
@@ -177,15 +200,32 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_deprecated_functions(self):
         """Check if deprecated functions are used."""
-        # hook_completion_get_string deprecated since WeeChat 2.9
+        # hook_completion_get_string is deprecated since WeeChat 2.9
         func = self.search_regex(r'hook_completion_get_string')
         for line_no, _ in func:
             self.message('warning', 'deprecated_hook_completion_get_string',
                          line=line_no)
-        # hook_completion_list_add deprecated since WeeChat 2.9
+        # hook_completion_list_add is deprecated since WeeChat 2.9
         func = self.search_regex(r'hook_completion_list_add')
         for line_no, _ in func:
             self.message('warning', 'deprecated_hook_completion_list_add',
+                         line=line_no)
+
+    def _check_deprecated_info(self):
+        """Check if deprecated info are used."""
+        # irc_nick_color is deprecated since WeeChat 1.5
+        func = self.search_func_arg('info_get',
+                                    '["\']irc_nick_color["\']',
+                                    flags=re.DOTALL)
+        for line_no, _ in func:
+            self.message('warning', 'deprecated_irc_nick_color',
+                         line=line_no)
+        # irc_nick_color_name is deprecated since WeeChat 1.5
+        func = self.search_func_arg('info_get',
+                                    '["\']irc_nick_color_name["\']',
+                                    flags=re.DOTALL)
+        for line_no, _ in func:
+            self.message('warning', 'deprecated_irc_nick_color_name',
                          line=line_no)
 
     def check(self):
