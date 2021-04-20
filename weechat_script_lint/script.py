@@ -81,6 +81,25 @@ EMAIL_REGEX = re.compile(
 )
 
 
+class ScriptMessage:  # pylint: disable=too-few-public-methods
+    """A script message (error/warning/info)."""
+
+    def __init__(self, path: pathlib.Path, level: str, msg_name: str,
+                 line: int, **kwargs):
+        self.path: pathlib.Path = path
+        self.level: str = level
+        self.msg_name: str = msg_name
+        self.line: int = line
+        self.text: str = MESSAGES[level][msg_name].format(**kwargs)
+
+    def as_str(self, use_colors: bool = True):
+        """Return formatted message."""
+        label = (color(self.level, LEVEL_LABELS[self.level])
+                 if use_colors else self.level)
+        return (f'{self.path}:{self.line}: {label} [{self.msg_name}]: '
+                f'{self.text}')
+
+
 class WeechatScript:  # pylint: disable=too-many-instance-attributes
     """A WeeChat script."""
 
@@ -90,13 +109,16 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         self.ignored_msg = [code.strip() for code in ignore.split(',') if code]
         self.msg_level: int = list(LEVEL_LABELS.keys()).index(msg_level)
         self.use_colors: bool = use_colors
-        self.messages: List[str] = []
+        self.messages: List[ScriptMessage] = []
         self.count: Dict[str, int] = {label: 0 for label in LEVEL_LABELS}
         self.script: str = self.path.read_text()
 
     def __str__(self) -> str:
         """Return string with warnings/errors found."""
-        return '\n'.join(self.messages) if self.messages else ''
+        return '\n'.join([
+            msg.as_str(use_colors=self.use_colors)
+            for msg in self.messages
+        ])
 
     def message(self, level: str, msg_name: str, line: int = 1, **kwargs):
         """
@@ -109,11 +131,9 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         if msg_name in self.ignored_msg \
                 or self.msg_level < list(LEVEL_LABELS.keys()).index(level):
             return
-        label = (color(level, LEVEL_LABELS[level])
-                 if self.use_colors else level)
-        text = MESSAGES[level][msg_name].format(**kwargs)
-        self.messages.append(f'{self.path}:{line}: {label} [{msg_name}]: '
-                             f'{text}')
+        self.messages.append(
+            ScriptMessage(self.path, level, msg_name, line, **kwargs)
+        )
         self.count[level] += 1
 
     def search_regex(self, regex: str, flags: int = 0,
@@ -149,28 +169,15 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         :param max_lines: max number of lines in each string found
         :return: list of tuples: (line_number, match)
         """
-        regex = fr'{function}[\s(]*{argument}'
+        regex = fr'{function}[\s,(]*{argument}'
         return self.search_regex(regex, flags=flags, max_lines=max_lines)
 
-    def _check_shebang(self):
-        """Check if a sheband is present."""
-        if self.script.startswith('#!'):
-            self.message('info', 'unneeded_shebang')
+    # === errors ===
 
     def _check_email(self):
         """Check if an e-mail is present."""
         if not re.search(EMAIL_REGEX, self.script):
             self.message('error', 'missing_email')
-
-    def _check_weechat_site(self):
-        """Check if there are occurrences of wrong links to WeeChat site."""
-        # http required, www not needed
-        links = self.search_regex(
-            r'(?:http://[w.]+weechat|https?://www.weechat)(?:\.org|\.net)',
-            flags=re.IGNORECASE,
-        )
-        for line_no, link in links:
-            self.message('info', 'url_weechat', line=line_no, link=link)
 
     def _check_infolist(self):
         """Check if infolist_free is called."""
@@ -181,6 +188,16 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             for line_no, _ in list_infolist_get:
                 self.message('error', 'missing_infolist_free', line=line_no)
 
+    def _check_python2_bin(self):
+        """Check if the info "python2_bin" is used."""
+        if self.path.suffix == '.py':
+            python2_bin = self.search_func_arg('info_get',
+                                               '["\']python2_bin["\']')
+            for line_no, _ in python2_bin:
+                self.message('error', 'python2_bin', line=line_no)
+
+    # === warnings ===
+
     def _check_exit(self):
         """Check if an exit from the script can exit WeeChat."""
         if self.path.suffix == '.py':
@@ -190,13 +207,6 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             sys_exits = self.search_regex(r'sys\.exit')
             for line_no, _ in sys_exits:
                 self.message('warning', 'sys_exit', line=line_no)
-
-    def _check_python2_bin(self):
-        """Check if the info "python2_bin" is used."""
-        if self.path.suffix == '.py':
-            python2_bin = self.search_regex(r'python2_bin')
-            for line_no, _ in python2_bin:
-                self.message('error', 'python2_bin', line=line_no)
 
     def _check_deprecated_functions(self):
         """Check if deprecated functions are used."""
@@ -228,9 +238,29 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             self.message('warning', 'deprecated_irc_nick_color_name',
                          line=line_no)
 
+    # === info ===
+
+    def _check_shebang(self):
+        """Check if a sheband is present."""
+        if self.script.startswith('#!'):
+            self.message('info', 'unneeded_shebang')
+
+    def _check_weechat_site(self):
+        """Check if there are occurrences of wrong links to WeeChat site."""
+        # http required, www not needed
+        links = self.search_regex(
+            r'(?:http://[w.]+weechat|https?://www.weechat)(?:\.org|\.net)',
+            flags=re.IGNORECASE,
+        )
+        for line_no, link in links:
+            self.message('info', 'url_weechat', line=line_no, link=link)
+
+    # run all checks, display report
+
     def check(self):
         """Perform checks on the script."""
         methods = inspect.getmembers(self, predicate=inspect.ismethod)
+        methods.sort(key=lambda m: m[1].__func__.__code__.co_firstlineno)
         for name, method in methods:
             if name.startswith('_check_'):
                 method()

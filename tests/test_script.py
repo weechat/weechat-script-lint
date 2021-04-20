@@ -26,6 +26,19 @@ from weechat_script_lint import WeechatScript
 
 SCRIPTS_DIR = Path(__file__).resolve().parent / 'scripts'
 
+ALL_ERRORS = [
+    ('error', 1, 'missing_email'),
+    ('error', 17, 'missing_infolist_free'),
+    ('error', 18, 'python2_bin'),
+    ('warning', 24, 'sys_exit'),
+    ('warning', 19, 'deprecated_hook_completion_get_string'),
+    ('warning', 20, 'deprecated_hook_completion_list_add'),
+    ('warning', 22, 'deprecated_irc_nick_color'),
+    ('warning', 23, 'deprecated_irc_nick_color_name'),
+    ('info', 1, 'unneeded_shebang'),
+    ('info', 13, 'url_weechat'),
+]
+
 
 def test_script_valid():
     """Tests on a valid script."""
@@ -60,8 +73,13 @@ def test_script_all_errors():
     assert script.script
     script.check()
     assert str(script)
-    assert len(str(script).split('\n')) == 11
-    assert script.count == {'error': 4, 'warning': 5, 'info': 2}
+    assert len(str(script).split('\n')) == 10
+    assert script.count == {'error': 3, 'warning': 5, 'info': 2}
+    errors = [
+        (msg.level, msg.line, msg.msg_name)
+        for msg in script.messages
+    ]
+    assert errors == ALL_ERRORS
 
     # ignore 2 messages: "missing_email" and "sys_exit"
     script = WeechatScript(path, ignore='missing_email,sys_exit')
@@ -75,8 +93,8 @@ def test_script_all_errors():
     assert script.script
     script.check()
     assert str(script)
-    assert len(str(script).split('\n')) == 9
-    assert script.count == {'error': 3, 'warning': 4, 'info': 2}
+    assert len(str(script).split('\n')) == 8
+    assert script.count == {'error': 2, 'warning': 4, 'info': 2}
 
 
 def test_script_empty_file():

@@ -88,7 +88,7 @@ def test_main_dir():
         with mock.patch.object(sys, 'argv', args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert exc.value.code == 9
+    assert exc.value.code == 7
 
     # check directory with scripts, treat warnings as errors
     args = [
@@ -102,7 +102,7 @@ def test_main_dir():
         with mock.patch.object(sys, 'argv', args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert exc.value.code == 19
+    assert exc.value.code == 17
 
     args = [
         'weechat-script-lint',
@@ -115,7 +115,7 @@ def test_main_dir():
         with mock.patch.object(sys, 'argv', args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert exc.value.code == 8
+    assert exc.value.code == 6
 
     # check a file that isn't a WeeChat script
     filename = str(SCRIPTS_DIR / 'not_a_script.txt')
