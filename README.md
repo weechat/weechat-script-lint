@@ -32,60 +32,83 @@ levels:
 
 ### Error: missing_email
 
-This is a problem if the script is submitted in the official scripts repository
-where the e-mail is required.
+**Issue**: the e-mail is required if the script is submitted in the official
+scripts repository (error can be ignored in other cases).
 
-In other cases, the error can be ignored.
+**How to fix**: add a contact e-mail in the header of the script.
 
 ### Error: missing_infolist_free
 
-When an infolist is asked to WeeChat with `infolist_get`, it must always be
-freed by a call to `infolist_free`, otherwise this causes a memory leak.
+**Issue**: when an infolist is asked to WeeChat with `infolist_get`, it must
+always be freed by a call to `infolist_free`, otherwise this causes a memory leak.
 
-### Error: python2_bin
+**How to fix**: call `infolist_free` on each pointer returned by a call to
+`infolist_get`.
 
-The info `python2_bin` is used to find the path to Python 2.x interpreter.
-Since WeeChat is compiled with Python 3 and that all scripts aim to be
-compatible with Python 3, this info must not be used at all any more (note that
-some systems may not provide Python 2 any more).
+### Error: python2_bin (Python script only)
 
-### Warning: sys_exit (Python)
+**Issue**: the info `python2_bin` is used to find the path to Python 2.x
+interpreter. Since WeeChat is compiled with Python 3 and that all scripts aim
+to be compatible with Python 3, this info must not be used at all any more.
+Note that some systems may not provide Python 2 at all any more.
 
-The function `sys.exit()` causes WeeChat to exit itself, so it must not be used
-in scripts.
+**How to fix**: if the Python interpreter is used to run a background command,
+consider using function [hook_process](https://weechat.org/files/doc/stable/weechat_plugin_api.en.html#_hook_process)`
+or [hook_process_hashtable](https://weechat.org/files/doc/stable/weechat_plugin_api.en.html#_hook_process_hashtable).
 
+### Warning: sys_exit (Python script only)
+
+**Issue**: the function `sys.exit()` causes WeeChat to exit itself, so it
+must not be used in scripts.\
 This is a warning and not an error because if it is used when the import of
 `weechat` fails, that means the script is not executed in WeeChat and then the
 call to `sys.exit()` is harmless.
 
+**How to fix**: if `sys.exit()` is called when the import of weechat fails,
+consider setting a variable instead that will prevent the call to
+`weechat.register` to be made.
+
 ### Warning: deprecated_hook_completion_get_string
 
-The function `hook_completion_get_string` is deprecated and should not be used
-any more since WeeChat 2.9, it must be replaced by `completion_get_string`.
+**Issue**: the function `hook_completion_get_string` is deprecated and should
+not be used any more since WeeChat 2.9.
+
+**How to fix**: call the function `completion_get_string`.
 
 ### Warning: deprecated_hook_completion_list_add
 
-The function `hook_completion_list_add` is deprecated and should not be used
-any more since WeeChat 2.9, it must be replaced by `completion_list_add`.
+**Issue**: the function `hook_completion_list_add` is deprecated and should
+not be used any more since WeeChat 2.9.
+
+**How to fix**: call the function `completion_list_add`.
 
 ### Warning: deprecated_irc_nick_color
 
-The info `irc_nick_color` is deprecated and should not be used any more
-since WeeChat 1.5, it must be replaced by `nick_color`.
+**Issue**: the info `irc_nick_color` is deprecated and should not be used
+any more since WeeChat 1.5.
+
+**How to fix**: use the info `nick_color`.
 
 ### Warning: deprecated_irc_nick_color_name
 
-The info `irc_nick_color_name` is deprecated and should not be used any more
-since WeeChat 1.5, it must be replaced by `nick_color_name`.
+**Issue**: the info `irc_nick_color_name` is deprecated and should not be used
+any more since WeeChat 1.5.
+
+**How to fix**: use the info `nick_color_name`.
 
 ### Info: unneeded_shebang
 
-The shebang is not needed, except if the script can be called outside WeeChat,
-which is rare.
+**Issue**: the shebang is not needed, except if the script can be called
+outside WeeChat, which is rare.
+
+**How to fix**: remove the shebang, unless it is really needed.
 
 ### Info: url_weechat
 
-The WeeChat site URL is https://weechat.org (`https` and no `www`).
+**Issue**: the WeeChat site URL is not the official one.
+
+**How to fix**: replace the URL by the official one: https://weechat.org
+(`https` and no `www`).
 
 ## Example
 
