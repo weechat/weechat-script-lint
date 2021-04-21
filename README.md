@@ -53,7 +53,7 @@ to be compatible with Python 3, this info must not be used at all any more.
 Note that some systems may not provide Python 2 at all any more.
 
 **How to fix**: if the Python interpreter is used to run a background command,
-consider using function [hook_process](https://weechat.org/files/doc/stable/weechat_plugin_api.en.html#_hook_process)`
+consider using function [hook_process](https://weechat.org/files/doc/stable/weechat_plugin_api.en.html#_hook_process)
 or [hook_process_hashtable](https://weechat.org/files/doc/stable/weechat_plugin_api.en.html#_hook_process_hashtable).
 
 ### Warning: sys_exit (Python script only)
