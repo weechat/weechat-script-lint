@@ -117,6 +117,32 @@ def test_main_dir():
     assert exc.type == SystemExit
     assert exc.value.code == 6
 
+    # check a script returning only a warning
+    filename = str(SCRIPTS_DIR / 'script_modifier_irc_in.py')
+    args = [
+        'weechat-script-lint',
+        '--verbose',
+        filename,
+    ]
+    with pytest.raises(SystemExit) as exc:
+        with mock.patch.object(sys, 'argv', args):
+            weechat_script_lint.main()
+    assert exc.type == SystemExit
+    assert exc.value.code == 0
+
+    # check a script returning only an info
+    filename = str(SCRIPTS_DIR / 'script_unneeded_shebang.py')
+    args = [
+        'weechat-script-lint',
+        '--verbose',
+        filename,
+    ]
+    with pytest.raises(SystemExit) as exc:
+        with mock.patch.object(sys, 'argv', args):
+            weechat_script_lint.main()
+    assert exc.type == SystemExit
+    assert exc.value.code == 0
+
     # check a file that isn't a WeeChat script
     filename = str(SCRIPTS_DIR / 'not_a_script.txt')
     args = ['weechat-script-lint', '--verbose', filename]

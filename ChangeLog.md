@@ -2,6 +2,7 @@
 
 ## Version 0.3.0 (under dev)
 
+- Display report and return code.
 - Add option `-q` / `--quiet`.
 
 ## Version 0.2.0 (2021-04-21)

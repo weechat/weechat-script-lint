@@ -20,14 +20,14 @@
 
 """Static analysis tool for WeeChat scripts."""
 
-from typing import Generator, Tuple
+from typing import Dict, Generator, Tuple
 
 import argparse
 import pathlib
 import sys
 
 from weechat_script_lint.script import WeechatScript
-
+from weechat_script_lint.utils import color
 
 __version__ = '0.3.0-dev'
 
@@ -110,6 +110,28 @@ def get_scripts(path: pathlib.Path,
         yield path
 
 
+def print_report(num_scripts: int, count: Dict[str, int],
+                 use_colors: bool = True):
+    """
+    Print final report.
+
+    :param num_scripts: number of script analyzed
+    :param count: counters (errors/warnings/info)
+    :param use_colors: True to use colors in output
+    """
+    colorize = color if use_colors else lambda x, y: x
+    if sum(count.values()) == 0:
+        status = colorize('Perfect', 'bold,green')
+    elif count['error'] + count['warning'] == 0:
+        status = colorize('Almost good', 'bold,yellow')
+    else:
+        status = colorize('Bad news', 'bold,red')
+    print(f'{status}: {num_scripts} scripts analyzed: '
+          f'{count["error"]} errors, '
+          f'{count["warning"]} warnings, '
+          f'{count["info"]} info')
+
+
 def check_scripts(args) -> int:
     """
     Check scripts.
@@ -117,7 +139,12 @@ def check_scripts(args) -> int:
     :param argparse.Namespace args: command-line arguments
     :return: number of errors found
     """
-    errors = 0
+    count = {
+        'error': 0,
+        'warning': 0,
+        'info': 0,
+    }
+    num_scripts = 0
     ignored_files = (args.ignore_files or '').split(',')
     for path in args.path:
         scripts = get_scripts(path, args.recursive)
@@ -128,6 +155,7 @@ def check_scripts(args) -> int:
                     print(f'{path_script}: file ignored')
                 continue
             # check script
+            num_scripts += 1
             script = WeechatScript(
                 path=path_script,
                 ignore=args.ignore_messages or '',
@@ -137,18 +165,24 @@ def check_scripts(args) -> int:
             script.check()
             if not args.quiet:
                 script.print_report()
-            # add errors found
-            errors += script.count['error']
-            if args.strict:
-                errors += script.count['warning']
-    return errors
+            # add errors/warnings/info found
+            for counter in script.count:
+                count[counter] += script.count[counter]
+    if not args.quiet:
+        print_report(num_scripts, count, use_colors=not args.no_colors)
+    if args.strict:
+        return count['error'] + count['warning']
+    return count['error']
 
 
 def main():
     """Main function."""
     args = get_parser().parse_args()
     errors = check_scripts(args)
-    sys.exit(min(255, errors))
+    ret_code = min(255, errors)
+    if not args.quiet:
+        print(f'Exiting with code {ret_code}')
+    sys.exit(ret_code)
 
 
 def init(force: bool = False):
