@@ -96,6 +96,15 @@ any more since WeeChat 1.5.
 
 **How to fix**: use the info `nick_color_name`.
 
+### Warning: modifier_irc_in
+
+**Issue**: the modifier `irc_in_xxx` sends the raw IRC message to the callback
+which may not be UTF-8 valid. This is a problem in some languages like Python.
+
+**How to fix**: use the modifier `irc_in2_xxx`. The modifier `irc_in_xxx` can
+be used only if the callback operates on the raw IRC message and is prepared
+to receive invalid UTF-8 data.
+
 ### Info: unneeded_shebang
 
 **Issue**: the shebang is not needed, except if the script can be called
