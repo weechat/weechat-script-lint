@@ -46,9 +46,8 @@ freed by a call to `infolist_free`, otherwise this causes a memory leak.
 
 The info `python2_bin` is used to find the path to Python 2.x interpreter.
 Since WeeChat is compiled with Python 3 and that all scripts aim to be
-compatible with Python 3, this info must not be used at all any more.
-
-Moreover, some systems don't include Python 2 any more.
+compatible with Python 3, this info must not be used at all any more (note that
+some systems may not provide Python 2 any more).
 
 ### Warning: sys_exit (Python)
 
@@ -62,30 +61,22 @@ call to `sys.exit()` is harmless.
 ### Warning: deprecated_hook_completion_get_string
 
 The function `hook_completion_get_string` is deprecated and should not be used
-any more since WeeChat 2.9.
-
-The function `completion_get_string` must be used instead.
+any more since WeeChat 2.9, it must be replaced by `completion_get_string`.
 
 ### Warning: deprecated_hook_completion_list_add
 
 The function `hook_completion_list_add` is deprecated and should not be used
-any more since WeeChat 2.9.
-
-The function `completion_list_add` must be used instead.
+any more since WeeChat 2.9, it must be replaced by `completion_list_add`.
 
 ### Warning: deprecated_irc_nick_color
 
 The info `irc_nick_color` is deprecated and should not be used any more
-since WeeChat 1.5.
-
-The info `nick_color` must be used instead.
+since WeeChat 1.5, it must be replaced by `nick_color`.
 
 ### Warning: deprecated_irc_nick_color_name
 
 The info `irc_nick_color_name` is deprecated and should not be used any more
-since WeeChat 1.5.
-
-The info `nick_color_name` must be used instead.
+since WeeChat 1.5, it must be replaced by `nick_color_name`.
 
 ### Info: unneeded_shebang
 
