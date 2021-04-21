@@ -21,4 +21,5 @@ if __name__ == '__main__':
                                          weechat.WEECHAT_LIST_POS_SORT)
         color_code = weechat.info_get('irc_nick_color', 'nick')
         color_name = weechat.info_get('irc_nick_color_name', 'nick')
+        weechat.hook_modifier('irc_in_privmsg', 'callback', '')
         sys.exit(1)

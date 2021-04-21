@@ -62,6 +62,10 @@ MESSAGES: Dict[str, Dict[str, str]] = {
             'info irc_nick_color_name is deprecated since WeeChat 1.5 '
             'and must be replaced by nick_color_name'
         ),
+        'modifier_irc_in': (
+            'modifier irc_in_xxx should be replaced by irc_in2_xxx which '
+            'sends only valid UTF-8 data'
+        ),
     },
     'info': {
         'unneeded_shebang': 'shebang not needed',
@@ -158,8 +162,8 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
                 occur.append((line, match_str))
         return occur
 
-    def search_func_arg(self, function: str, argument: str, flags: int = 0,
-                        max_lines: int = 2) -> List[Tuple[int, str]]:
+    def search_func(self, function: str, argument: str = '', flags: int = 0,
+                    max_lines: int = 2) -> List[Tuple[int, str]]:
         """
         Search a call to a function with the given argument.
 
@@ -191,8 +195,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_python2_bin(self):
         """Check if the info "python2_bin" is used."""
         if self.path.suffix == '.py':
-            python2_bin = self.search_func_arg('info_get',
-                                               '["\']python2_bin["\']')
+            python2_bin = self.search_func('info_get', '["\']python2_bin["\']')
             for line_no, _ in python2_bin:
                 self.message('error', 'python2_bin', line=line_no)
 
@@ -224,19 +227,21 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_deprecated_info(self):
         """Check if deprecated info are used."""
         # irc_nick_color is deprecated since WeeChat 1.5
-        func = self.search_func_arg('info_get',
-                                    '["\']irc_nick_color["\']',
-                                    flags=re.DOTALL)
+        func = self.search_func('info_get', '["\']irc_nick_color["\']')
         for line_no, _ in func:
             self.message('warning', 'deprecated_irc_nick_color',
                          line=line_no)
         # irc_nick_color_name is deprecated since WeeChat 1.5
-        func = self.search_func_arg('info_get',
-                                    '["\']irc_nick_color_name["\']',
-                                    flags=re.DOTALL)
+        func = self.search_func('info_get', '["\']irc_nick_color_name["\']')
         for line_no, _ in func:
             self.message('warning', 'deprecated_irc_nick_color_name',
                          line=line_no)
+
+    def _check_modifier_irc_in(self):
+        """Check if modifier irc_in_xxx is used."""
+        func = self.search_func('hook_modifier', '["\']irc_in_')
+        for line_no, _ in func:
+            self.message('warning', 'modifier_irc_in', line=line_no)
 
     # === info ===
 
