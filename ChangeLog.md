@@ -1,6 +1,6 @@
 # weechat-script-lint ChangeLog
 
-## Version 0.2.0 (under dev)
+## Version 0.2.0 (2021-04-21)
 
 - Sort messages by severity (high first).
 - Fix duplicate errors on `python2_bin`.
