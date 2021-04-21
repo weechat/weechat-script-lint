@@ -1,5 +1,9 @@
 # weechat-script-lint ChangeLog
 
+## Version 0.3.0 (under dev)
+
+- Add option `-q` / `--quiet`.
+
 ## Version 0.2.0 (2021-04-21)
 
 - Sort messages by severity (high first).

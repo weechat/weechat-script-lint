@@ -71,6 +71,8 @@ def get_parser() -> argparse.ArgumentParser:
                               'info = all messages'))
     parser.add_argument('-m', '--ignore-messages',
                         help='comma-separated list of error codes to ignore')
+    parser.add_argument('-q', '--quiet', action='store_true',
+                        help='do not display any message')
     parser.add_argument('-r', '--recursive', action='store_true',
                         help='recursively find scripts in sub-directories')
     parser.add_argument('-s', '--strict', action='store_true',
@@ -126,12 +128,12 @@ def check_scripts(args) -> int:
                 and path_script.resolve() != pathlib.Path(__file__).resolve()
             )
             if not script_valid:
-                if args.verbose:
+                if not args.quiet and args.verbose:
                     print(f'{path_script}: not a WeeChat script, ignored')
                 continue
             # ignored file?
             if path_script.name in ignored_files:
-                if args.verbose:
+                if not args.quiet and args.verbose:
                     print(f'{path_script}: file ignored')
                 continue
             # check script
@@ -142,7 +144,8 @@ def check_scripts(args) -> int:
                 msg_level=args.level,
             )
             script.check()
-            script.print_report()
+            if not args.quiet:
+                script.print_report()
             # add errors found
             errors += script.count['error']
             if args.strict:
