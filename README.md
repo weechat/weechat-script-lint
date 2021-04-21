@@ -109,6 +109,20 @@ which may not be UTF-8 valid. This is a problem in some languages like Python.
 be used only if the callback operates on the raw IRC message and is prepared
 to receive invalid UTF-8 data.
 
+### Warning: signal_irc_out
+
+**Issue**: the signal `irc_out_xxx` sends the raw IRC message to the callback
+which may not be UTF-8 valid. This is a problem in some languages like Python.
+
+**How to fix**: use the signal `irc_out1_xxx`.
+
+### Warning: signal_irc_outtags
+
+**Issue**: the signal `irc_outtags_xxx` sends the raw IRC message to the callback
+which may not be UTF-8 valid. This is a problem in some languages like Python.
+
+**How to fix**: use the signal `irc_out1_xxx`.
+
 ### Info: unneeded_shebang
 
 **Issue**: the shebang is not needed, except if the script can be called

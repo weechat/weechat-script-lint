@@ -66,6 +66,14 @@ MESSAGES: Dict[str, Dict[str, str]] = {
             'modifier irc_in_xxx should be replaced by irc_in2_xxx which '
             'sends only valid UTF-8 data'
         ),
+        'signal_irc_out': (
+            'signal irc_out_xxx should be replaced by irc_out1_yyy which '
+            'sends only valid UTF-8 data'
+        ),
+        'signal_irc_outtags': (
+            'signal irc_outtags_xxx should be replaced by irc_out1_yyy which '
+            'sends only valid UTF-8 data'
+        ),
     },
     'info': {
         'unneeded_shebang': 'shebang not needed',
@@ -242,6 +250,15 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         func = self.search_func('hook_modifier', '["\']irc_in_')
         for line_no, _ in func:
             self.message('warning', 'modifier_irc_in', line=line_no)
+
+    def _check_signals_irc_out(self):
+        """Check if signals irc_out_xxx or irc_outtags_xxx are used."""
+        func = self.search_func('hook_signal', '["\'][^"\']+,irc_out_')
+        for line_no, _ in func:
+            self.message('warning', 'signal_irc_out', line=line_no)
+        func = self.search_func('hook_signal', '["\'][^"\']+,irc_outtags_')
+        for line_no, _ in func:
+            self.message('warning', 'signal_irc_outtags', line=line_no)
 
     # === info ===
 
