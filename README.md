@@ -19,6 +19,10 @@ In a Python virtual environment:
 $ pip install weechat-script-lint
 ```
 
+## Usage
+
+See output of `weechat-script-lint --help`.
+
 ## Checks
 
 When a script is checked, problems are displayed on output, with one of these
