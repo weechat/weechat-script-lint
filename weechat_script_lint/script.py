@@ -252,7 +252,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_weechat_site(self):
         """Check if there are occurrences of wrong links to WeeChat site."""
-        # http required, www not needed
+        # https required, www not needed
         links = self.search_regex(
             r'(?:http://[w.]+weechat|https?://www.weechat)(?:\.org|\.net)',
             flags=re.IGNORECASE,
