@@ -106,7 +106,7 @@ def get_scripts(path: pathlib.Path,
                 yield from get_scripts(path2, recursive)
     elif not path.is_file():
         sys.exit(f'FATAL: not a directory/file: {path}')
-    else:
+    elif path.suffix in SUPPORTED_SUFFIXES:
         yield path
 
 
@@ -122,15 +122,6 @@ def check_scripts(args) -> int:
     for path in args.path:
         scripts = get_scripts(path, args.recursive)
         for path_script in scripts:
-            # ignore any unknown language or this script
-            script_valid = (
-                path_script.suffix in SUPPORTED_SUFFIXES
-                and path_script.resolve() != pathlib.Path(__file__).resolve()
-            )
-            if not script_valid:
-                if not args.quiet and args.verbose:
-                    print(f'{path_script}: not a WeeChat script, ignored')
-                continue
             # ignored file?
             if path_script.name in ignored_files:
                 if not args.quiet and args.verbose:
