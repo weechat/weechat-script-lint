@@ -63,16 +63,16 @@ MESSAGES: Dict[str, Dict[str, str]] = {
             'and must be replaced by nick_color_name'
         ),
         'modifier_irc_in': (
-            'modifier irc_in_xxx should be replaced by irc_in2_xxx which '
-            'sends only valid UTF-8 data'
+            'modifier irc_in_{message} should be replaced by '
+            'irc_in2_{message} which sends only valid UTF-8 data'
         ),
         'signal_irc_out': (
-            'signal irc_out_xxx should be replaced by irc_out1_yyy which '
-            'sends only valid UTF-8 data'
+            'signal irc_out_{message} should be replaced by '
+            'irc_out1_{message} which sends only valid UTF-8 data'
         ),
         'signal_irc_outtags': (
-            'signal irc_outtags_xxx should be replaced by irc_out1_yyy which '
-            'sends only valid UTF-8 data'
+            'signal irc_outtags_{message} should be replaced by '
+            'irc_out1_{message} which sends only valid UTF-8 data'
         ),
     },
     'info': {
@@ -149,7 +149,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         self.count[level] += 1
 
     def search_regex(self, regex: str, flags: int = 0,
-                     max_lines: int = 1) -> List[Tuple[int, str]]:
+                     max_lines: int = 1) -> List[Tuple[int, re.Match]]:
         """
         Search a regular expression in each line of the script.
         A same line can be returned multiple times, if the string appears
@@ -163,15 +163,14 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         pattern = re.compile(regex, flags=flags)
         occur = []
         for match in pattern.finditer(self.script):
-            match_str = match.group()
-            match_lines = match_str.count('\n') + 1
+            match_lines = match.group().count('\n') + 1
             if match_lines <= max_lines:
                 line = match.string[:match.start()].count('\n') + 1
-                occur.append((line, match_str))
+                occur.append((line, match))
         return occur
 
     def search_func(self, function: str, argument: str = '', flags: int = 0,
-                    max_lines: int = 2) -> List[Tuple[int, str]]:
+                    max_lines: int = 2) -> List[Tuple[int, re.Match]]:
         """
         Search a call to a function with the given argument.
 
@@ -247,18 +246,23 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_modifier_irc_in(self):
         """Check if modifier irc_in_xxx is used."""
-        func = self.search_func('hook_modifier', '["\']irc_in_')
-        for line_no, _ in func:
-            self.message('warning', 'modifier_irc_in', line=line_no)
+        func = self.search_func('hook_modifier', '["\']irc_in_([^"\']+)["\']')
+        for line_no, match in func:
+            self.message('warning', 'modifier_irc_in', line=line_no,
+                         message=match.group(1))
 
     def _check_signals_irc_out(self):
         """Check if signals irc_out_xxx or irc_outtags_xxx are used."""
-        func = self.search_func('hook_signal', '["\'][^"\']+,irc_out_')
-        for line_no, _ in func:
-            self.message('warning', 'signal_irc_out', line=line_no)
-        func = self.search_func('hook_signal', '["\'][^"\']+,irc_outtags_')
-        for line_no, _ in func:
-            self.message('warning', 'signal_irc_outtags', line=line_no)
+        func = self.search_func('hook_signal',
+                                '["\'][^"\']+,irc_out_([^"\']+)["\']')
+        for line_no, match in func:
+            self.message('warning', 'signal_irc_out', line=line_no,
+                         message=match.group(1))
+        func = self.search_func('hook_signal',
+                                '["\'][^"\']+,irc_outtags_([^"\']+)["\']')
+        for line_no, match in func:
+            self.message('warning', 'signal_irc_outtags', line=line_no,
+                         message=match.group(1))
 
     # === info ===
 
@@ -274,8 +278,9 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             r'(?:http://[w.]+weechat|https?://www.weechat)(?:\.org|\.net)',
             flags=re.IGNORECASE,
         )
-        for line_no, link in links:
-            self.message('info', 'url_weechat', line=line_no, link=link)
+        for line_no, match in links:
+            self.message('info', 'url_weechat', line=line_no,
+                         link=match.group())
 
     # run all checks, display report
 
