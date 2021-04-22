@@ -267,7 +267,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     # === info ===
 
     def _check_shebang(self):
-        """Check if a sheband is present."""
+        """Check if a shebang is present."""
         if self.script.startswith('#!'):
             self.message('info', 'unneeded_shebang')
 
