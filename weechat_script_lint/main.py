@@ -71,6 +71,10 @@ def get_parser() -> argparse.ArgumentParser:
                               'info = all messages'))
     parser.add_argument('-m', '--ignore-messages',
                         help='comma-separated list of error codes to ignore')
+    parser.add_argument('-n', '--name-only', action='store_true',
+                        help=('display only name of script but not the list '
+                              'of messages, do not display report and return '
+                              'code'))
     parser.add_argument('-q', '--quiet', action='store_true',
                         help='do not display any message')
     parser.add_argument('-r', '--recursive', action='store_true',
@@ -164,11 +168,13 @@ def check_scripts(args) -> int:
             )
             script.check()
             if not args.quiet:
-                script.print_report()
+                report = script.get_report(args.name_only)
+                if report:
+                    print(report)
             # add errors/warnings/info found
             for counter in script.count:
                 count[counter] += script.count[counter]
-    if not args.quiet:
+    if not args.quiet and not args.name_only:
         print_report(num_scripts, count, use_colors=not args.no_colors)
     if args.strict:
         return count['error'] + count['warning']
@@ -180,7 +186,7 @@ def main():
     args = get_parser().parse_args()
     errors = check_scripts(args)
     ret_code = min(255, errors)
-    if not args.quiet:
+    if not args.quiet and not args.name_only:
         print(f'Exiting with code {ret_code}')
     sys.exit(ret_code)
 

@@ -292,7 +292,15 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             if name.startswith('_check_'):
                 method()
 
-    def print_report(self):
-        """Print report, if any."""
-        if self.messages:
-            print(str(self))
+    def get_report(self, name_only: bool = False) -> str:
+        """
+        Print report, if any.
+
+        :param name_only: display only the name of script
+        :return: report as string
+        """
+        if not self.messages:
+            return ''
+        if name_only:
+            return self.path.name
+        return str(self)

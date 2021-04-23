@@ -59,6 +59,8 @@ def test_script_valid():
     script.check()
     assert str(script) == ''
     assert script.count == {'error': 0, 'warning': 0, 'info': 0}
+    assert script.get_report(False) == ''
+    assert script.get_report(True) == ''
 
 
 def test_script_all_errors():
@@ -83,6 +85,8 @@ def test_script_all_errors():
         for msg in script.messages
     ]
     assert errors == ALL_ERRORS
+    assert len(script.get_report(False).split('\n')) == 13
+    assert script.get_report(True) == 'script_all_errors.py'
 
     # ignore 2 messages: "missing_email" and "sys_exit"
     script = WeechatScript(path, ignore='missing_email,sys_exit')
@@ -98,6 +102,8 @@ def test_script_all_errors():
     assert str(script)
     assert len(str(script).split('\n')) == 11
     assert script.count == {'error': 2, 'warning': 7, 'info': 2}
+    assert len(script.get_report(False).split('\n')) == 11
+    assert script.get_report(True) == 'script_all_errors.py'
 
 
 def test_script_empty_file():
@@ -115,3 +121,5 @@ def test_script_empty_file():
     script.check()
     assert str(script)
     assert script.count == {'error': 1, 'warning': 0, 'info': 0}
+    assert len(script.get_report(False).split('\n')) == 1
+    assert script.get_report(True) == 'script_empty.py'
