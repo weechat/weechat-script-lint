@@ -114,12 +114,13 @@ def get_scripts(path: pathlib.Path,
         yield path
 
 
-def print_report(num_scripts: int, count: Dict[str, int],
-                 use_colors: bool = True):
+def print_report(num_scripts: int, num_scripts_with_issues: int,
+                 count: Dict[str, int], use_colors: bool = True):
     """
     Print final report.
 
     :param num_scripts: number of script analyzed
+    :param num_scripts_with_issues: number of scripts with issues
     :param count: counters (errors/warnings/info)
     :param use_colors: True to use colors in output
     """
@@ -130,7 +131,8 @@ def print_report(num_scripts: int, count: Dict[str, int],
         status = colorize('Almost good', 'bold,yellow')
     else:
         status = colorize('Bad news', 'bold,red')
-    print(f'{status}: {num_scripts} scripts analyzed: '
+    print(f'{status}: {num_scripts} scripts analyzed, '
+          f'{num_scripts_with_issues} with issues: '
           f'{count["error"]} errors, '
           f'{count["warning"]} warnings, '
           f'{count["info"]} info')
@@ -149,6 +151,7 @@ def check_scripts(args) -> int:
         'info': 0,
     }
     num_scripts = 0
+    num_scripts_with_issues = 0
     ignored_files = (args.ignore_files or '').split(',')
     for path in args.path:
         scripts = get_scripts(path, args.recursive)
@@ -167,15 +170,17 @@ def check_scripts(args) -> int:
                 msg_level=args.level,
             )
             script.check()
-            if not args.quiet:
-                report = script.get_report(args.name_only)
-                if report:
+            report = script.get_report(args.name_only)
+            if report:
+                num_scripts_with_issues += 1
+                if report and not args.quiet:
                     print(report)
             # add errors/warnings/info found
             for counter in script.count:
                 count[counter] += script.count[counter]
     if not args.quiet and not args.name_only:
-        print_report(num_scripts, count, use_colors=not args.no_colors)
+        print_report(num_scripts, num_scripts_with_issues,
+                     count, use_colors=not args.no_colors)
     if args.strict:
         return count['error'] + count['warning']
     return count['error']
