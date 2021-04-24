@@ -130,7 +130,7 @@ def print_report(num_scripts: int, num_scripts_with_issues: int,
     elif count['error'] + count['warning'] == 0:
         status = colorize('Almost good', 'bold,yellow')
     else:
-        status = colorize('Bad news', 'bold,red')
+        status = colorize('Not so good', 'bold,red')
     print(f'{status}: {num_scripts} scripts analyzed, '
           f'{num_scripts_with_issues} with issues: '
           f'{count["error"]} errors, '
