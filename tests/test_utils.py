@@ -25,7 +25,7 @@ from weechat_script_lint import color
 
 def test_color():  # pylint: disable=too-many-statements
     """Test color function."""
-    assert color('', '') == ''
-    assert color('test', '') == 'test'
-    assert color('test', 'red') == '\x1b[31mtest\x1b[0m'
-    assert color('test', 'red,bold') == '\x1b[31m\x1b[1mtest\x1b[0m'
+    assert color("", "") == ""
+    assert color("test", "") == "test"
+    assert color("test", "red") == "\x1b[31mtest\x1b[0m"
+    assert color("test", "red,bold") == "\x1b[31m\x1b[1mtest\x1b[0m"

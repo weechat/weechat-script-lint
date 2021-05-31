@@ -23,22 +23,22 @@
 from typing import Dict
 
 __all__ = (
-    'color',
+    "color",
 )
 
 COLORS: Dict[str, str] = {
-    'black': '30',
-    'red': '31',
-    'green': '32',
-    'yellow': '33',
-    'blue': '34',
-    'magenta': '35',
-    'cyan': '36',
-    'reset_color': '49',
-    'bold': '1',
-    'underline': '4',
-    'blink': '5',
-    'reset_props': '0',
+    "black": "30",
+    "red": "31",
+    "green": "32",
+    "yellow": "33",
+    "blue": "34",
+    "magenta": "35",
+    "cyan": "36",
+    "reset_color": "49",
+    "bold": "1",
+    "underline": "4",
+    "blink": "5",
+    "reset_props": "0",
 }
 
 
@@ -54,8 +54,6 @@ def color(text: str, colors: str) -> str:
     if not colors:
         return text
     attrs = []
-    for color_name in colors.split(','):
-        attrs.append('\033[%sm' % COLORS.get(color_name, ''))
-    return '%s%s\033[%sm' % (''.join(attrs),
-                             str(text),
-                             COLORS['reset_props'])
+    for color_name in colors.split(","):
+        attrs.append("\033[%sm" % COLORS.get(color_name, ""))
+    return "%s%s\033[%sm" % ("".join(attrs), str(text), COLORS["reset_props"])

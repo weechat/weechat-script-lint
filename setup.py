@@ -22,38 +22,38 @@ from codecs import open
 from setuptools import setup, find_packages
 from weechat_script_lint import __version__ as wsl_version
 
-DESCRIPTION = 'Static analysis tool for WeeChat scripts.'
+DESCRIPTION = "Static analysis tool for WeeChat scripts."
 
-with open('README.md', 'r', 'utf-8') as f:
+with open("README.md", "r", "utf-8") as f:
     readme = f.read()
 
 setup(
-    name='weechat-script-lint',
+    name="weechat-script-lint",
     version=wsl_version,
     description=DESCRIPTION,
     long_description=readme,
-    long_description_content_type='text/markdown',
-    author='Sébastien Helleu',
-    author_email='flashcode@flashtux.org',
-    url='https://github.com/weechat/weechat-script-lint',
-    license='GPL3',
-    keywords='static analysis weechat script lint',
+    long_description_content_type="text/markdown",
+    author="Sébastien Helleu",
+    author_email="flashcode@flashtux.org",
+    url="https://github.com/weechat/weechat-script-lint",
+    license="GPL3",
+    keywords="static analysis weechat script lint",
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v3 '
-        'or later (GPLv3+)',
-        'Natural Language :: English',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Topic :: Software Development',
-        'Topic :: Utilities',
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU General Public License v3 "
+        "or later (GPLv3+)",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Topic :: Software Development",
+        "Topic :: Utilities",
     ],
     packages=find_packages(),
-    tests_require=['pytest'],
+    tests_require=["pytest"],
     entry_points={
-        'console_scripts': ['weechat-script-lint=weechat_script_lint:main'],
-    }
+        "console_scripts": ["weechat-script-lint=weechat_script_lint:main"],
+    },
 )
