@@ -29,7 +29,7 @@ import sys
 from weechat_script_lint.script import WeechatScript
 from weechat_script_lint.utils import color
 
-__version__ = "0.3.0"
+__version__ = "0.4.0-dev"
 
 __all__ = (
     "__version__",
