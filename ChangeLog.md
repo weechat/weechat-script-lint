@@ -1,6 +1,6 @@
 # weechat-script-lint ChangeLog
 
-## Version 0.3.0 (under dev)
+## Version 0.3.0 (2021-06-05)
 
 - Display report and return code.
 - Add option `-n` / `--name-only`.
