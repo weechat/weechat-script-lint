@@ -168,9 +168,11 @@ def print_report(
     if sum(count.values()) == 0:
         status = colorize("Perfect", "bold,green")
     elif count["error"] + count["warning"] == 0:
-        status = colorize("Almost good", "bold,yellow")
+        status = colorize("Almost good", "bold,cyan")
+    elif count["error"] == 0:
+        status = colorize("Not so good", "bold,yellow")
     else:
-        status = colorize("Not so good", "bold,red")
+        status = colorize("FAILED", "bold,red")
     print(
         f"{status}: {num_scripts} scripts analyzed, "
         f"{num_scripts_with_issues} with issues: "

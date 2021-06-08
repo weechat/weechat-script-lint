@@ -1,5 +1,9 @@
 # weechat-script-lint ChangeLog
 
+## Version 0.4.0 (under dev)
+
+- Add status "FAILED" in report, display "Not so good" in yellow when there are no errors, display "Almost good" in cyan.
+
 ## Version 0.3.0 (2021-06-05)
 
 - Display report and return code.
