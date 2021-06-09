@@ -164,22 +164,25 @@ def print_report(
     :param count: counters (errors/warnings/info)
     :param use_colors: True to use colors in output
     """
-    colorize = color if use_colors else lambda x, y: x
-    if sum(count.values()) == 0:
-        status = colorize("Perfect", "bold,green")
-    elif count["error"] + count["warning"] == 0:
-        status = colorize("Almost good", "bold,cyan")
-    elif count["error"] == 0:
-        status = colorize("Not so good", "bold,yellow")
+    if num_scripts == 0:
+        print("No scripts analyzed")
     else:
-        status = colorize("FAILED", "bold,red")
-    print(
-        f"{status}: {num_scripts} scripts analyzed, "
-        f"{num_scripts_with_issues} with issues: "
-        f'{count["error"]} errors, '
-        f'{count["warning"]} warnings, '
-        f'{count["info"]} info'
-    )
+        colorize = color if use_colors else lambda x, y: x
+        if sum(count.values()) == 0:
+            status = colorize("Perfect", "bold,green")
+        elif count["error"] + count["warning"] == 0:
+            status = colorize("Almost good", "bold,cyan")
+        elif count["error"] == 0:
+            status = colorize("Not so good", "bold,yellow")
+        else:
+            status = colorize("FAILED", "bold,red")
+        print(
+            f"{status}: {num_scripts} scripts analyzed, "
+            f"{num_scripts_with_issues} with issues: "
+            f'{count["error"]} errors, '
+            f'{count["warning"]} warnings, '
+            f'{count["info"]} info'
+        )
 
 
 def check_scripts(args) -> int:

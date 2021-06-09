@@ -2,6 +2,7 @@
 
 ## Version 0.4.0 (under dev)
 
+- Display a specific message when no scripts are analyzed.
 - Add status "FAILED" in report, display "Not so good" in yellow when there are no errors, display "Almost good" in cyan.
 
 ## Version 0.3.0 (2021-06-05)
