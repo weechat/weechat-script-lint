@@ -21,7 +21,7 @@ all: check
 
 check: lint test
 
-lint: flake8 pylint mypy
+lint: flake8 pylint mypy bandit
 
 flake8:
 	flake8 weechat_script_lint tests/*.py --count --select=E9,F63,F7,F82 --show-source --statistics
@@ -32,6 +32,9 @@ pylint:
 
 mypy:
 	mypy weechat_script_lint tests/*.py
+
+bandit:
+	bandit -r weechat_script_lint
 
 test:
 	pytest -vv --cov-report term-missing --cov=weechat_script_lint tests
