@@ -38,46 +38,72 @@ LEVEL_LABELS: Dict[str, str] = {
     "info": "bold,green",
 }
 
-MESSAGES: Dict[str, Dict[str, str]] = {
+# format: level -> error: (score, message)
+MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
     "error": {
-        "missing_email": "the author e-mail is missing",
-        "missing_infolist_free": "missing call to infolist_free",
-        "python2_bin": "the info python2_bin must not be used any more",
+        "missing_email": (
+            -15,
+            "the author e-mail is missing",
+        ),
+        "missing_infolist_free": (
+            -20,
+            "missing call to infolist_free",
+        ),
+        "python2_bin": (
+            -25,
+            "the info python2_bin must not be used any more",
+        ),
     },
     "warning": {
-        "sys_exit": "sys.exit() causes WeeChat to exit itself",
+        "sys_exit": (
+            -10,
+            "sys.exit() causes WeeChat to exit itself",
+        ),
         "deprecated_hook_completion_get_string": (
+            -8,
             "function hook_completion_get_string is deprecated "
             "since WeeChat 2.9 and must be replaced by completion_get_string"
         ),
         "deprecated_hook_completion_list_add": (
+            -8,
             "function hook_completion_list_add is deprecated "
             "since WeeChat 2.9 and must be replaced by completion_list_add"
         ),
         "deprecated_irc_nick_color": (
+            -8,
             "info irc_nick_color is deprecated since WeeChat 1.5 "
             "and must be replaced by nick_color"
         ),
         "deprecated_irc_nick_color_name": (
+            -8,
             "info irc_nick_color_name is deprecated since WeeChat 1.5 "
             "and must be replaced by nick_color_name"
         ),
         "modifier_irc_in": (
+            -10,
             "modifier irc_in_{message} should be replaced by "
             "irc_in2_{message} which sends only valid UTF-8 data"
         ),
         "signal_irc_out": (
+            -10,
             "signal irc_out_{message} should be replaced by "
             "irc_out1_{message} which sends only valid UTF-8 data"
         ),
         "signal_irc_outtags": (
+            -10,
             "signal irc_outtags_{message} should be replaced by "
             "irc_out1_{message} which sends only valid UTF-8 data"
         ),
     },
     "info": {
-        "unneeded_shebang": "shebang not needed",
-        "url_weechat": "URL {link} should be changed to https://weechat.org",
+        "unneeded_shebang": (
+            -1,
+            "shebang not needed",
+        ),
+        "url_weechat": (
+            -1,
+            "URL {link} should be changed to https://weechat.org",
+        ),
     },
 }
 
@@ -107,7 +133,8 @@ class ScriptMessage:  # pylint: disable=too-few-public-methods
         self.level: str = level
         self.msg_name: str = msg_name
         self.line: int = line
-        self.text: str = MESSAGES[level][msg_name].format(**kwargs)
+        self.score = MESSAGES[level][msg_name][0]
+        self.text: str = MESSAGES[level][msg_name][1].format(**kwargs)
 
     def as_str(self, use_colors: bool = True) -> str:
         """Return formatted message."""
@@ -133,12 +160,15 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         use_colors: bool = True,
     ) -> None:
         self.path: pathlib.Path = path.resolve()
-        self.ignored_msg = [code.strip() for code in ignore.split(",") if code]
+        self.ignored_msg = [
+            code.strip() for code in ignore.split(",") if code
+        ]
         self.msg_level: int = list(LEVEL_LABELS.keys()).index(msg_level)
         self.use_colors: bool = use_colors
         self.messages: List[ScriptMessage] = []
         self.count: Dict[str, int] = {label: 0 for label in LEVEL_LABELS}
         self.script: str = self.path.read_text()
+        self.score = 100
 
     def __str__(self) -> str:
         """Return string with warnings/errors found."""
@@ -160,10 +190,10 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             LEVEL_LABELS.keys()
         ).index(level):
             return
-        self.messages.append(
-            ScriptMessage(self.path, level, msg_name, line, **kwargs)
-        )
+        msg = ScriptMessage(self.path, level, msg_name, line, **kwargs)
+        self.messages.append(msg)
         self.count[level] += 1
+        self.score = max(0, self.score + msg.score)
 
     def search_regex(
         self, regex: str, flags: int = 0, max_lines: int = 1
@@ -225,7 +255,9 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_python2_bin(self) -> None:
         """Check if the info "python2_bin" is used."""
         if self.path.suffix == ".py":
-            python2_bin = self.search_func("info_get", "[\"']python2_bin[\"']")
+            python2_bin = self.search_func(
+                "info_get", "[\"']python2_bin[\"']"
+            )
             for line_no, _ in python2_bin:
                 self.message("error", "python2_bin", line=line_no)
 

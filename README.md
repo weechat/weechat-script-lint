@@ -139,14 +139,30 @@ outside WeeChat, which is rare.
 
 ## Example
 
+Default output:
+
 ```
 $ weechat-script-lint script.py
 /path/to/script.py:44: info [url_weechat]: URL http://www.weechat.org should be changed to https://weechat.org
 /path/to/script.py:45: warning [sys_exit]: sys.exit() causes WeeChat to exit itself
 /path/to/script.py:98: error [python2_bin]: the info python2_bin must not be used any more
 /path/to/script.py:167: error [missing_infolist_free]: missing call to infolist_free
+/path/to/script.py: score = 39 / 100
 Not so good: 1 scripts analyzed, 1 with issues: 2 errors, 1 warnings, 1 info
 Exiting with code 2
+```
+
+Scripts grouped by score:
+
+```
+$ weechat-script-lint --score --recursive /path/to/directory
+2 scripts with score 100 / 100:
+  /path/to/directory/test.py
+  /path/to/directory/example.py
+3 scripts with score 79 / 100:
+  /path/to/directory/dummy.py
+  /path/to/directory/fake.py
+  /path/to/directory/other.py
 ```
 
 ## Copyright

@@ -104,6 +104,20 @@ def test_main_dir():
     assert exc.type == SystemExit
     assert exc.value.code == 23
 
+    # check directory with scripts, display scripts by score
+    args = [
+        "weechat-script-lint",
+        "--score",
+        "--verbose",
+        "--recursive",
+        str(SCRIPTS_DIR),
+    ]
+    with pytest.raises(SystemExit) as exc:
+        with mock.patch.object(sys, "argv", args):
+            weechat_script_lint.main()
+    assert exc.type == SystemExit
+    assert exc.value.code == 7
+
     args = [
         "weechat-script-lint",
         "--ignore-files",
