@@ -1,6 +1,6 @@
 # weechat-script-lint ChangeLog
 
-## Version 0.4.0 (under dev)
+## Version 0.4.0 (2021-08-18)
 
 - Compute a score for each script, add option `-S` / `--score`.
 - Add lint with bandit in CI.
