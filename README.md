@@ -147,7 +147,7 @@ $ weechat-script-lint script.py
 /path/to/script.py:45: warning [sys_exit]: sys.exit() causes WeeChat to exit itself
 /path/to/script.py:98: error [python2_bin]: the info python2_bin must not be used any more
 /path/to/script.py:167: error [missing_infolist_free]: missing call to infolist_free
-/path/to/script.py: score = 39 / 100
+/path/to/script.py: score = 44 / 100
 Not so good: 1 scripts analyzed, 1 with issues: 2 errors, 1 warnings, 1 info
 Exiting with code 2
 ```
