@@ -53,7 +53,7 @@ def test_script_valid():
     assert script.ignored_msg == []
     assert script.msg_level == 2
     assert script.use_colors is True
-    assert script.messages == []
+    assert not script.messages
     assert script.count == {"error": 0, "warning": 0, "info": 0}
     assert script.script
     script.check()
@@ -73,7 +73,7 @@ def test_script_all_errors():
     assert script.ignored_msg == []
     assert script.msg_level == 2
     assert script.use_colors is True
-    assert script.messages == []
+    assert not script.messages
     assert script.count == {"error": 0, "warning": 0, "info": 0}
     assert script.script
     script.check()
@@ -92,7 +92,7 @@ def test_script_all_errors():
     assert script.ignored_msg == ["missing_email", "sys_exit"]
     assert script.msg_level == 2
     assert script.use_colors is True
-    assert script.messages == []
+    assert not script.messages
     assert script.count == {"error": 0, "warning": 0, "info": 0}
     assert script.script
     script.check()
@@ -112,7 +112,7 @@ def test_script_empty_file():
     assert script.ignored_msg == []
     assert script.msg_level == 2
     assert script.use_colors is True
-    assert script.messages == []
+    assert not script.messages
     assert script.count == {"error": 0, "warning": 0, "info": 0}
     assert script.script == ""
     script.check()
