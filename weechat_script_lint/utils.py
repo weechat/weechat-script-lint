@@ -56,4 +56,4 @@ def color(text: str, colors: str) -> str:
     attrs = []
     for color_name in colors.split(","):
         attrs.append(f"\033[{COLORS.get(color_name, '')}m")
-    return f"{''.join(attrs)}{str(text)}{COLORS['reset_props']}\033[%sm"
+    return f"{''.join(attrs)}{str(text)}\033[{COLORS['reset_props']}m"
