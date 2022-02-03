@@ -256,7 +256,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         """Check if the info "python2_bin" is used."""
         if self.path.suffix == ".py":
             python2_bin = self.search_func(
-                "info_get", "[\"']python2_bin[\"']"
+                "info_get", r"[\"']python2_bin[\"']"
             )
             for line_no, _ in python2_bin:
                 self.message("error", "python2_bin", line=line_no)
@@ -293,11 +293,11 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_deprecated_info(self) -> None:
         """Check if deprecated info are used."""
         # irc_nick_color is deprecated since WeeChat 1.5
-        func = self.search_func("info_get", "[\"']irc_nick_color[\"']")
+        func = self.search_func("info_get", r"[\"']irc_nick_color[\"']")
         for line_no, _ in func:
             self.message("warning", "deprecated_irc_nick_color", line=line_no)
         # irc_nick_color_name is deprecated since WeeChat 1.5
-        func = self.search_func("info_get", "[\"']irc_nick_color_name[\"']")
+        func = self.search_func("info_get", r"[\"']irc_nick_color_name[\"']")
         for line_no, _ in func:
             self.message(
                 "warning", "deprecated_irc_nick_color_name", line=line_no
@@ -305,7 +305,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_modifier_irc_in(self) -> None:
         """Check if modifier irc_in_xxx is used."""
-        func = self.search_func("hook_modifier", "[\"']irc_in_([^\"']+)[\"']")
+        func = self.search_func("hook_modifier", r"[\"']irc_in_([^\"']+)[\"']")
         for line_no, match in func:
             self.message(
                 "warning",
@@ -317,7 +317,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_signals_irc_out(self) -> None:
         """Check if signals irc_out_xxx or irc_outtags_xxx are used."""
         func = self.search_func(
-            "hook_signal", "[\"'][^\"']+,irc_out_([^\"']+)[\"']"
+            "hook_signal", r"[\"'][^\"']+,irc_out_([^\"']+)[\"']"
         )
         for line_no, match in func:
             self.message(
@@ -327,7 +327,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
                 message=match.group(1),
             )
         func = self.search_func(
-            "hook_signal", "[\"'][^\"']+,irc_outtags_([^\"']+)[\"']"
+            "hook_signal", r"[\"'][^\"']+,irc_outtags_([^\"']+)[\"']"
         )
         for line_no, match in func:
             self.message(
