@@ -1,5 +1,9 @@
 # weechat-script-lint ChangeLog
 
+## Version 0.5.0 (under dev)
+
+- Add error `mixed_tabs_spaces` for Python scripts.
+
 ## Version 0.4.0 (2021-08-18)
 
 - Compute a score for each script, add option `-S` / `--score`.

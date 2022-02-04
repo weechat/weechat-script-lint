@@ -88,7 +88,7 @@ def test_main_dir():
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert exc.value.code == 7
+    assert exc.value.code == 10
 
     # check directory with scripts, treat warnings as errors
     args = [
@@ -102,7 +102,7 @@ def test_main_dir():
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert exc.value.code == 23
+    assert exc.value.code == 26
 
     # check directory with scripts, display scripts by score
     args = [
@@ -116,7 +116,7 @@ def test_main_dir():
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert exc.value.code == 7
+    assert exc.value.code == 10
 
     args = [
         "weechat-script-lint",
@@ -130,7 +130,7 @@ def test_main_dir():
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert exc.value.code == 6
+    assert exc.value.code == 9
 
     # check a script returning only a warning
     filename = str(SCRIPTS_DIR / "script_modifier_irc_in.py")

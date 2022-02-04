@@ -30,6 +30,7 @@ ALL_ERRORS = [
     ("error", 1, "missing_email"),
     ("error", 17, "missing_infolist_free"),
     ("error", 18, "python2_bin"),
+    ("error", 1, "mixed_tabs_spaces"),
     ("warning", 27, "sys_exit"),
     ("warning", 19, "deprecated_hook_completion_get_string"),
     ("warning", 20, "deprecated_hook_completion_list_add"),
@@ -78,11 +79,12 @@ def test_script_all_errors():
     assert script.script
     script.check()
     assert str(script)
-    assert len(str(script).split("\n")) == 13
-    assert script.count == {"error": 3, "warning": 8, "info": 2}
+    assert len(str(script).split("\n")) == 14
+    print(script.count)
+    assert script.count == {"error": 4, "warning": 8, "info": 2}
     errors = [(msg.level, msg.line, msg.msg_name) for msg in script.messages]
     assert errors == ALL_ERRORS
-    assert len(script.get_report(False).split("\n")) == 13
+    assert len(script.get_report(False).split("\n")) == 14
     assert script.get_report(True) == "script_all_errors.py"
 
     # ignore 2 messages: "missing_email" and "sys_exit"
@@ -97,9 +99,9 @@ def test_script_all_errors():
     assert script.script
     script.check()
     assert str(script)
-    assert len(str(script).split("\n")) == 11
-    assert script.count == {"error": 2, "warning": 7, "info": 2}
-    assert len(script.get_report(False).split("\n")) == 11
+    assert len(str(script).split("\n")) == 12
+    assert script.count == {"error": 3, "warning": 7, "info": 2}
+    assert len(script.get_report(False).split("\n")) == 12
     assert script.get_report(True) == "script_all_errors.py"
 
 

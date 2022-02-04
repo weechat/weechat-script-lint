@@ -53,6 +53,10 @@ MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
             -25,
             "the info python2_bin must not be used any more",
         ),
+        "mixed_tabs_spaces": (
+            -25,
+            "mixed tabs and spaces for indentation",
+        ),
     },
     "warning": {
         "sys_exit": (
@@ -62,37 +66,37 @@ MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
         "deprecated_hook_completion_get_string": (
             -8,
             "function hook_completion_get_string is deprecated "
-            "since WeeChat 2.9 and must be replaced by completion_get_string"
+            "since WeeChat 2.9 and must be replaced by completion_get_string",
         ),
         "deprecated_hook_completion_list_add": (
             -8,
             "function hook_completion_list_add is deprecated "
-            "since WeeChat 2.9 and must be replaced by completion_list_add"
+            "since WeeChat 2.9 and must be replaced by completion_list_add",
         ),
         "deprecated_irc_nick_color": (
             -8,
             "info irc_nick_color is deprecated since WeeChat 1.5 "
-            "and must be replaced by nick_color"
+            "and must be replaced by nick_color",
         ),
         "deprecated_irc_nick_color_name": (
             -8,
             "info irc_nick_color_name is deprecated since WeeChat 1.5 "
-            "and must be replaced by nick_color_name"
+            "and must be replaced by nick_color_name",
         ),
         "modifier_irc_in": (
             -10,
             "modifier irc_in_{message} should be replaced by "
-            "irc_in2_{message} which sends only valid UTF-8 data"
+            "irc_in2_{message} which sends only valid UTF-8 data",
         ),
         "signal_irc_out": (
             -10,
             "signal irc_out_{message} should be replaced by "
-            "irc_out1_{message} which sends only valid UTF-8 data"
+            "irc_out1_{message} which sends only valid UTF-8 data",
         ),
         "signal_irc_outtags": (
             -10,
             "signal irc_outtags_{message} should be replaced by "
-            "irc_out1_{message} which sends only valid UTF-8 data"
+            "irc_out1_{message} which sends only valid UTF-8 data",
         ),
     },
     "info": {
@@ -260,6 +264,16 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             )
             for line_no, _ in python2_bin:
                 self.message("error", "python2_bin", line=line_no)
+
+    def _check_mixed_tabs_spaces(self) -> None:
+        """Check if mixed tabs and spaces are used for indentation."""
+        if self.path.suffix == ".py":
+            content = '\n' + self.script.replace('\r', '\n')
+            tabs = re.search(r"\n\t+[^ \n]", content)
+            spaces = re.search(r"\n +[^\t\n]", content)
+            mixed = re.search(r"\n(\t+ | +\t)", content)
+            if mixed or (tabs and spaces):
+                self.message("error", "mixed_tabs_spaces")
 
     # === warnings ===
 
