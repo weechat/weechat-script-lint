@@ -268,7 +268,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_mixed_tabs_spaces(self) -> None:
         """Check if mixed tabs and spaces are used for indentation."""
         if self.path.suffix == ".py":
-            content = '\n' + self.script.replace('\r', '\n')
+            content = "\n" + self.script.replace("\r", "\n")
             tabs = re.search(r"\n\t+[^ \n]", content)
             spaces = re.search(r"\n +[^\t\n]", content)
             mixed = re.search(r"\n(\t+ | +\t)", content)
@@ -319,7 +319,9 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_modifier_irc_in(self) -> None:
         """Check if modifier irc_in_xxx is used."""
-        func = self.search_func("hook_modifier", r"[\"']irc_in_([^\"']+)[\"']")
+        func = self.search_func(
+            "hook_modifier", r"[\"']irc_in_([^\"']+)[\"']"
+        )
         for line_no, match in func:
             self.message(
                 "warning",
