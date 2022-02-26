@@ -44,7 +44,7 @@ ALL_ERRORS = [
 ]
 
 
-def test_script_valid():
+def test_script_valid() -> None:
     """Tests on a valid script."""
     path = SCRIPTS_DIR / "script_valid.py"
 
@@ -64,7 +64,7 @@ def test_script_valid():
     assert script.get_report(True) == ""
 
 
-def test_script_all_errors():
+def test_script_all_errors() -> None:
     """Tests on a script with all possible messages."""
     path = SCRIPTS_DIR / "script_all_errors.py"
 
@@ -105,7 +105,7 @@ def test_script_all_errors():
     assert script.get_report(True) == "script_all_errors.py"
 
 
-def test_script_empty_file():
+def test_script_empty_file() -> None:
     """Tests on a script with all possible messages."""
     path = SCRIPTS_DIR / "script_empty.py"
     script = WeechatScript(path)

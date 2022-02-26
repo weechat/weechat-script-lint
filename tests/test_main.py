@@ -32,7 +32,7 @@ import weechat_script_lint
 SCRIPTS_DIR = Path(__file__).resolve().parent / "scripts"
 
 
-def test_main_no_scripts():
+def test_main_no_scripts() -> None:
     """Test main function without scripts."""
 
     # no argument
@@ -52,7 +52,7 @@ def test_main_no_scripts():
     assert exc.value.code == 0
 
 
-def test_main_script():
+def test_main_script() -> None:
     """Test main function with a single script."""
 
     # script not found
@@ -74,7 +74,7 @@ def test_main_script():
     assert exc.value.code == 0
 
 
-def test_main_dir():
+def test_main_dir() -> None:
     """Test main function with a directory."""
 
     # check directory with scripts
@@ -168,7 +168,7 @@ def test_main_dir():
     assert exc.value.code == 0
 
 
-def test_init():
+def test_init() -> None:
     """Test init function."""
     filename = str(SCRIPTS_DIR / "script_valid.py")
     args = ["weechat-script-lint", filename]

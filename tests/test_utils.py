@@ -23,7 +23,7 @@
 from weechat_script_lint import color
 
 
-def test_color():  # pylint: disable=too-many-statements
+def test_color() -> None:  # pylint: disable=too-many-statements
     """Test color function."""
     assert color("", "") == ""
     assert color("test", "") == "test"
