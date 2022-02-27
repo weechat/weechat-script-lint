@@ -137,13 +137,13 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 def get_scripts(
-    path: pathlib.Path, args, ignored_files: List[str]
+    path: pathlib.Path, args: argparse.Namespace, ignored_files: List[str]
 ) -> Generator[pathlib.Path, None, None]:
     """
     Return the list of scripts in a path.
 
     :param path: path (directory or file)
-    :param argparse.Namespace args: command-line arguments
+    :param args: command-line arguments
     :return: list of scripts
     """
     if path.is_dir():
@@ -251,11 +251,11 @@ def print_scores(
         print(f"{path}: score = {str_score}")
 
 
-def check_scripts(args) -> Tuple[int, int]:
+def check_scripts(args: argparse.Namespace) -> Tuple[int, int]:
     """
     Check scripts.
 
-    :param argparse.Namespace args: command-line arguments
+    :param args: command-line arguments
     :return: number of errors found
     """
     count = {
