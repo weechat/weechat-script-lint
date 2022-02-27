@@ -62,7 +62,7 @@ def test_main_script() -> None:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert "FATAL" in exc.value.code
+    assert "FATAL" in exc.value.code  # type: ignore
 
     # check script OK
     filename = str(SCRIPTS_DIR / "script_valid.py")
