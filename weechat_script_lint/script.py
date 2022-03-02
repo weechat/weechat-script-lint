@@ -201,7 +201,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def search_regex(
         self, regex: str, flags: int = 0, max_lines: int = 1
-    ) -> List[Tuple[int, re.Match[str]]]:
+    ) -> List[Tuple[int, re.Match]]:
         """
         Search a regular expression in each line of the script.
         A same line can be returned multiple times, if the string appears
@@ -227,7 +227,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         argument: str = "",
         flags: int = 0,
         max_lines: int = 2,
-    ) -> List[Tuple[int, re.Match[str]]]:
+    ) -> List[Tuple[int, re.Match]]:
         """
         Search a call to a function with the given argument.
 
