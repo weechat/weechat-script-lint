@@ -131,7 +131,7 @@ class ScriptMessage:  # pylint: disable=too-few-public-methods
         level: str,
         msg_name: str,
         line: int,
-        **kwargs,
+        **kwargs: str,
     ) -> None:
         self.path: pathlib.Path = path
         self.level: str = level
@@ -181,7 +181,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         )
 
     def message(
-        self, level: str, msg_name: str, line: int = 1, **kwargs
+        self, level: str, msg_name: str, line: int = 1, **kwargs: str
     ) -> None:
         """
         Add a message in the list of messages.
