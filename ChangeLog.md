@@ -2,6 +2,7 @@
 
 ## Version 0.5.0 (under dev)
 
+- Allow deprecated stuff to be used if new names are used as well.
 - Add error `mixed_tabs_spaces` for Python scripts.
 
 ## Version 0.4.0 (2021-08-18)

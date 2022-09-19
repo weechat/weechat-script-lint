@@ -290,32 +290,52 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_deprecated_functions(self) -> None:
         """Check if deprecated functions are used."""
         # hook_completion_get_string is deprecated since WeeChat 2.9
-        func = self.search_regex(r"hook_completion_get_string")
-        for line_no, _ in func:
-            self.message(
-                "warning",
-                "deprecated_hook_completion_get_string",
-                line=line_no,
-            )
+        func_old = self.search_regex(r"hook_completion_get_string")
+        func_new = self.search_regex(r"completion_get_string")
+        if func_old and len(func_old) == len(func_new):
+            for line_no, _ in func_old:
+                self.message(
+                    "warning",
+                    "deprecated_hook_completion_get_string",
+                    line=line_no,
+                )
         # hook_completion_list_add is deprecated since WeeChat 2.9
-        func = self.search_regex(r"hook_completion_list_add")
-        for line_no, _ in func:
-            self.message(
-                "warning", "deprecated_hook_completion_list_add", line=line_no
-            )
+        func_old = self.search_regex(r"hook_completion_list_add")
+        func_new = self.search_regex(r"completion_list_add")
+        if func_old and len(func_old) == len(func_new):
+            for line_no, _ in func_old:
+                self.message(
+                    "warning",
+                    "deprecated_hook_completion_list_add",
+                    line=line_no,
+                )
 
     def _check_deprecated_info(self) -> None:
         """Check if deprecated info are used."""
         # irc_nick_color is deprecated since WeeChat 1.5
-        func = self.search_func("info_get", r"[\"']irc_nick_color[\"']")
-        for line_no, _ in func:
-            self.message("warning", "deprecated_irc_nick_color", line=line_no)
+        func_old = self.search_func("info_get", r"[\"']irc_nick_color[\"']")
+        func_new = self.search_func("info_get", r"[\"']nick_color[\"']")
+        if func_old and not func_new:
+            for line_no, _ in func_old:
+                self.message(
+                    "warning",
+                    "deprecated_irc_nick_color",
+                    line=line_no,
+                )
         # irc_nick_color_name is deprecated since WeeChat 1.5
-        func = self.search_func("info_get", r"[\"']irc_nick_color_name[\"']")
-        for line_no, _ in func:
-            self.message(
-                "warning", "deprecated_irc_nick_color_name", line=line_no
-            )
+        func_old = self.search_func(
+            "info_get",
+            r"[\"']irc_nick_color_name[\"']",
+        )
+        func_new = self.search_func(
+            "info_get",
+            r"[\"']nick_color_name[\"']",
+        )
+        if func_old and not func_new:
+            for line_no, _ in func_old:
+                self.message(
+                    "warning", "deprecated_irc_nick_color_name", line=line_no
+                )
 
     def _check_modifier_irc_in(self) -> None:
         """Check if modifier irc_in_xxx is used."""
