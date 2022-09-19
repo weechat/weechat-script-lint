@@ -6,6 +6,6 @@
 
 import weechat
 
-if __name__ == '__main__':
-    if weechat.register('script', 'author', '0.1', 'GPL3', 'desc', '', ''):
-        weechat.hook_signal('*,irc_outtags_privmsg', 'callback', '')
+if __name__ == "__main__":
+    if weechat.register("script", "author", "0.1", "GPL3", "desc", "", ""):
+        weechat.hook_signal("*,irc_outtags_privmsg", "callback", "")
