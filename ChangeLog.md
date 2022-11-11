@@ -1,6 +1,6 @@
 # weechat-script-lint ChangeLog
 
-## Version 0.5.1 (under dev)
+## Version 0.5.1 (2022-11-11)
 
 - Run CI on Ubuntu 22.04 and macOS 11.
 - Add error `mixed_tabs_spaces` in README.
