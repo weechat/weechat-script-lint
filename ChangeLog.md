@@ -1,5 +1,9 @@
 # weechat-script-lint ChangeLog
 
+## Version 0.5.1 (under dev)
+
+- Run CI on Ubuntu 22.04 and macOS 11.
+
 ## Version 0.5.0 (2022-11-11)
 
 - Allow deprecated stuff to be used if new names are used as well.
