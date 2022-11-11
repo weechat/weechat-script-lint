@@ -60,6 +60,12 @@ Note that some systems may not provide Python 2 at all any more.
 consider using function [hook_process](https://weechat.org/files/doc/stable/weechat_plugin_api.en.html#_hook_process)
 or [hook_process_hashtable](https://weechat.org/files/doc/stable/weechat_plugin_api.en.html#_hook_process_hashtable).
 
+### Error: mixed_tabs_spaces (Python script only)
+
+**Issue**: mixed tabs and spaces are used for indentation.
+
+**How to fix**: replace all tabs by spaces for indentation.
+
 ### Warning: sys_exit (Python script only)
 
 **Issue**: the function `sys.exit()` causes WeeChat to exit itself, so it
