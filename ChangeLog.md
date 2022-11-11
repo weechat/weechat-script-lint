@@ -3,6 +3,7 @@
 ## Version 0.5.1 (under dev)
 
 - Run CI on Ubuntu 22.04 and macOS 11.
+- Add error `mixed_tabs_spaces` in README.
 
 ## Version 0.5.0 (2022-11-11)
 
