@@ -1,6 +1,6 @@
 # weechat-script-lint ChangeLog
 
-## Version 0.5.0 (under dev)
+## Version 0.5.0 (2022-11-11)
 
 - Allow deprecated stuff to be used if new names are used as well.
 - Add error `mixed_tabs_spaces` for Python scripts.
