@@ -1,5 +1,9 @@
 # weechat-script-lint ChangeLog
 
+## Version 0.6.0 (under dev)
+
+- Remove warnings on deprecated infos `irc_nick_color` and `irc_nick_color_name` (used again with WeeChat >= 4.1.0).
+
 ## Version 0.5.1 (2022-11-11)
 
 - Run CI on Ubuntu 22.04 and macOS 11.
@@ -30,7 +34,7 @@
 - Check also empty files.
 - Add warnings on signals `irc_out_xxx` and `irc_outtags_xxx`.
 - Add warning on modifier `irc_in_xxx`.
-- Add warnings on deprecated info `irc_nick_color` and `irc_nick_color_name`.
+- Add warnings on deprecated infos `irc_nick_color` and `irc_nick_color_name`.
 - Add warnings on deprecated functions `hook_completion_get_string` and `hook_completion_list_add`.
 
 ## Version 0.1.0 (2021-04-19)

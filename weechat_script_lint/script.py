@@ -73,16 +73,6 @@ MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
             "function hook_completion_list_add is deprecated "
             "since WeeChat 2.9 and must be replaced by completion_list_add",
         ),
-        "deprecated_irc_nick_color": (
-            -8,
-            "info irc_nick_color is deprecated since WeeChat 1.5 "
-            "and must be replaced by nick_color",
-        ),
-        "deprecated_irc_nick_color_name": (
-            -8,
-            "info irc_nick_color_name is deprecated since WeeChat 1.5 "
-            "and must be replaced by nick_color_name",
-        ),
         "modifier_irc_in": (
             -10,
             "modifier irc_in_{message} should be replaced by "
@@ -308,33 +298,6 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
                     "warning",
                     "deprecated_hook_completion_list_add",
                     line=line_no,
-                )
-
-    def _check_deprecated_info(self) -> None:
-        """Check if deprecated info are used."""
-        # irc_nick_color is deprecated since WeeChat 1.5
-        func_old = self.search_func("info_get", r"[\"']irc_nick_color[\"']")
-        func_new = self.search_func("info_get", r"[\"']nick_color[\"']")
-        if func_old and not func_new:
-            for line_no, _ in func_old:
-                self.message(
-                    "warning",
-                    "deprecated_irc_nick_color",
-                    line=line_no,
-                )
-        # irc_nick_color_name is deprecated since WeeChat 1.5
-        func_old = self.search_func(
-            "info_get",
-            r"[\"']irc_nick_color_name[\"']",
-        )
-        func_new = self.search_func(
-            "info_get",
-            r"[\"']nick_color_name[\"']",
-        )
-        if func_old and not func_new:
-            for line_no, _ in func_old:
-                self.message(
-                    "warning", "deprecated_irc_nick_color_name", line=line_no
                 )
 
     def _check_modifier_irc_in(self) -> None:

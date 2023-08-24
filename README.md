@@ -92,20 +92,6 @@ not be used any more since WeeChat 2.9.
 
 **How to fix**: call the function `completion_list_add`.
 
-### Warning: deprecated_irc_nick_color
-
-**Issue**: the info `irc_nick_color` is deprecated and should not be used
-any more since WeeChat 1.5.
-
-**How to fix**: use the info `nick_color`.
-
-### Warning: deprecated_irc_nick_color_name
-
-**Issue**: the info `irc_nick_color_name` is deprecated and should not be used
-any more since WeeChat 1.5.
-
-**How to fix**: use the info `nick_color_name`.
-
 ### Warning: modifier_irc_in
 
 **Issue**: the modifier `irc_in_xxx` sends the raw IRC message to the callback
