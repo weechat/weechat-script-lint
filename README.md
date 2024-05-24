@@ -159,7 +159,7 @@ $ weechat-script-lint --score --recursive /path/to/directory
 
 ## Copyright
 
-Copyright © 2021-2023 [Sébastien Helleu](https://github.com/flashcode)
+Copyright © 2021-2024 [Sébastien Helleu](https://github.com/flashcode)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
