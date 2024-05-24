@@ -2,41 +2,41 @@
 
 ## Version 0.6.0 (under dev)
 
-- Remove warnings on deprecated infos `irc_nick_color` and `irc_nick_color_name` (used again with WeeChat >= 4.1.0).
+- Remove warnings on deprecated infos `irc_nick_color` and `irc_nick_color_name` (used again with WeeChat >= 4.1.0)
 
 ## Version 0.5.1 (2022-11-11)
 
-- Run CI on Ubuntu 22.04 and macOS 11.
-- Add error `mixed_tabs_spaces` in README.
+- Run CI on Ubuntu 22.04 and macOS 11
+- Add error `mixed_tabs_spaces` in README
 
 ## Version 0.5.0 (2022-11-11)
 
-- Allow deprecated stuff to be used if new names are used as well.
-- Add error `mixed_tabs_spaces` for Python scripts.
+- Allow deprecated stuff to be used if new names are used as well
+- Add error `mixed_tabs_spaces` for Python scripts
 
 ## Version 0.4.0 (2021-08-18)
 
-- Compute a score for each script, add option `-S` / `--score`.
-- Add lint with bandit in CI.
-- Display a specific message when no scripts are analyzed.
-- Add status "FAILED" in report, display "Not so good" in yellow when there are no errors, display "Almost good" in cyan.
+- Compute a score for each script, add option `-S` / `--score`
+- Add lint with bandit in CI
+- Display a specific message when no scripts are analyzed
+- Add status "FAILED" in report, display "Not so good" in yellow when there are no errors, display "Almost good" in cyan
 
 ## Version 0.3.0 (2021-06-05)
 
-- Display report and return code.
-- Add option `-n` / `--name-only`.
-- Add option `-q` / `--quiet`.
+- Display report and return code
+- Add option `-n` / `--name-only`
+- Add option `-q` / `--quiet`
 
 ## Version 0.2.0 (2021-04-21)
 
-- Sort messages by severity (high first).
-- Fix duplicate errors on `python2_bin`.
-- Check also empty files.
-- Add warnings on signals `irc_out_xxx` and `irc_outtags_xxx`.
-- Add warning on modifier `irc_in_xxx`.
-- Add warnings on deprecated infos `irc_nick_color` and `irc_nick_color_name`.
-- Add warnings on deprecated functions `hook_completion_get_string` and `hook_completion_list_add`.
+- Sort messages by severity (high first)
+- Fix duplicate errors on `python2_bin`
+- Check also empty files
+- Add warnings on signals `irc_out_xxx` and `irc_outtags_xxx`
+- Add warning on modifier `irc_in_xxx`
+- Add warnings on deprecated infos `irc_nick_color` and `irc_nick_color_name`
+- Add warnings on deprecated functions `hook_completion_get_string` and `hook_completion_list_add`
 
 ## Version 0.1.0 (2021-04-19)
 
-- First release.
+- First release
