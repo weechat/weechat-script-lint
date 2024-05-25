@@ -15,8 +15,8 @@ The script requires Python ≥ 3.7.
 
 In a Python virtual environment:
 
-```
-$ pip install weechat-script-lint
+```bash
+pip install weechat-script-lint
 ```
 
 ## Usage
@@ -133,7 +133,7 @@ outside WeeChat, which is rare.
 
 Default output:
 
-```
+```text
 $ weechat-script-lint script.py
 /path/to/script.py:44: info [url_weechat]: URL http://www.weechat.org should be changed to https://weechat.org
 /path/to/script.py:45: warning [sys_exit]: sys.exit() causes WeeChat to exit itself
@@ -146,7 +146,7 @@ Exiting with code 2
 
 Scripts grouped by score:
 
-```
+```text
 $ weechat-script-lint --score --recursive /path/to/directory
 2 scripts with score 100 / 100:
   /path/to/directory/test.py
