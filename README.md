@@ -126,7 +126,7 @@ outside WeeChat, which is rare.
 
 **Issue**: the WeeChat site URL is not the official one.
 
-**How to fix**: replace the URL by the official one: https://weechat.org
+**How to fix**: replace the URL by the official one: [https://weechat.org](https://weechat.org)
 (`https` and no `www`).
 
 ## Example
