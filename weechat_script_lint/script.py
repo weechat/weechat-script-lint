@@ -204,11 +204,11 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         """
         pattern = re.compile(regex, flags=flags)
         occur = []
-        for match in pattern.finditer(self.script):
-            match_lines = match.group().count("\n") + 1
+        for m in pattern.finditer(self.script):
+            match_lines = m.group().count("\n") + 1
             if match_lines <= max_lines:
-                line = match.string[: match.start()].count("\n") + 1
-                occur.append((line, match))
+                line = m.string[: m.start()].count("\n") + 1
+                occur.append((line, m))
         return occur
 
     def search_func(
@@ -305,12 +305,12 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         func = self.search_func(
             "hook_modifier", r"[\"']irc_in_([^\"']+)[\"']"
         )
-        for line_no, match in func:
+        for line_no, m in func:
             self.message(
                 "warning",
                 "modifier_irc_in",
                 line=line_no,
-                message=match.group(1),
+                message=m.group(1),
             )
 
     def _check_signals_irc_out(self) -> None:
@@ -318,22 +318,22 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         func = self.search_func(
             "hook_signal", r"[\"'][^\"']+,irc_out_([^\"']+)[\"']"
         )
-        for line_no, match in func:
+        for line_no, m in func:
             self.message(
                 "warning",
                 "signal_irc_out",
                 line=line_no,
-                message=match.group(1),
+                message=m.group(1),
             )
         func = self.search_func(
             "hook_signal", r"[\"'][^\"']+,irc_outtags_([^\"']+)[\"']"
         )
-        for line_no, match in func:
+        for line_no, m in func:
             self.message(
                 "warning",
                 "signal_irc_outtags",
                 line=line_no,
-                message=match.group(1),
+                message=m.group(1),
             )
 
     # === info ===
@@ -350,9 +350,9 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             r"(?:http://[w.]+weechat|https?://www.weechat)(?:\.org|\.net)",
             flags=re.IGNORECASE,
         )
-        for line_no, match in links:
+        for line_no, m in links:
             self.message(
-                "info", "url_weechat", line=line_no, link=match.group()
+                "info", "url_weechat", line=line_no, link=m.group()
             )
 
     # run all checks, display report
