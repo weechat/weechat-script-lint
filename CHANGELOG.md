@@ -6,6 +6,10 @@
 
 - Remove warnings on deprecated infos `irc_nick_color` and `irc_nick_color_name` (used again with WeeChat >= 4.1.0)
 
+### Changed
+
+- Improve e-mail regex
+
 ## Version 0.5.1 (2022-11-11)
 
 ### Changed
