@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 #
-# Copyright (C) 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
+# SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 # This file is part of weechat-script-lint.
 #
