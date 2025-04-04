@@ -2,6 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/weechat-script-lint.svg)](https://pypi.org/project/weechat-script-lint/)
 [![Build Status](https://github.com/weechat/weechat-script-lint/workflows/CI/badge.svg)](https://github.com/weechat/weechat-script-lint/actions?query=workflow%3A%22CI%22)
+[![REUSE status](https://api.reuse.software/badge/github.com/weechat/weechat-script-lint)](https://api.reuse.software/info/github.com/weechat/weechat-script-lint)
 
 Weechat-script-lint is a static analysis tool for WeeChat scripts.
 
