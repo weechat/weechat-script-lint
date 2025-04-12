@@ -106,8 +106,17 @@ MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
 # note: this is not a valid e-mail regex; it is very permissive to detect
 # only scripts that have no e-mail, even in an obfuscated form
 EMAIL_REGEX = re.compile(
-    # valid email with extra chars allowed (like # and * for obfuscation)
-    r"([*#a-z0-9_.+-]+ ?(@|[\[({ ] *at[\])} ] *) ?[*#a-z0-9-]+(\.| *dot *)[a-z0-9-.]+)|"
+    # valid email with extra chars allowed (like # and * for obfuscation), eg:
+    #   some.name@domain.org
+    #   some.name AT domain.org
+    #   some.name [at] domain [dot] org
+    r"("
+    r"[*#a-z0-9_.+-]+ ?"             # some.name
+    r"(@|[\[({ ] *at[\])} ] *) ?"    # "@", "[at]", " AT "
+    r"[*#a-z0-9-]+ ?"                # domain
+    r"(\.|[\[({ ] *dot[\])} ] *) ?"  # ".", "[dot]", " DOT "
+    r"[a-z0-9-.]+)"                  # org
+    r"|"
     # <some.email>
     r"(<[a-z0-9_.+-]+>)",
     flags=re.IGNORECASE,

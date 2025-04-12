@@ -8,7 +8,7 @@
 
 ### Changed
 
-- Improve e-mail regex
+- Improve regex to detect e-mails
 
 ## Version 0.5.1 (2022-11-11)
 
