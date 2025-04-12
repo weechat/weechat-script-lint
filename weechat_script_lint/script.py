@@ -90,6 +90,16 @@ MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
             "signal irc_outtags_{message} should be replaced by "
             "irc_out1_{message} which sends only valid UTF-8 data",
         ),
+        "hook_process_url": (
+            -5,
+            "function hook_process with \"url:\" should be replaced "
+            "by hook_url (WeeChat ≥ 4.1.0)",
+        ),
+        "hook_process_hashtable_url": (
+            -5,
+            "function hook_process_hashtable with \"url:\" should be replaced "
+            "by hook_url (WeeChat ≥ 4.1.0)",
+        ),
     },
     "info": {
         "unneeded_shebang": (
@@ -346,6 +356,32 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
                 line=line_no,
                 message=m.group(1),
             )
+
+    def _check_hook_process_url(self) -> None:
+        """Check if hook_process(_hashtable) with "url:" is used."""
+        func_url = self.search_regex("hook_url")
+        if func_url:
+            return
+        func_process = self.search_func(
+            "hook_process", r"[\"']url:"
+        )
+        func_process_hashtable = self.search_func(
+            "hook_process_hashtable", r"[\"']url:"
+        )
+        if func_process:
+            for line_no, m in func_process:
+                self.message(
+                    "warning",
+                    "hook_process_url",
+                    line=line_no,
+                )
+        if func_process_hashtable:
+            for line_no, m in func_process_hashtable:
+                self.message(
+                    "warning",
+                    "hook_process_hashtable_url",
+                    line=line_no,
+                )
 
     # === info ===
 

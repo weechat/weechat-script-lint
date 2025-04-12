@@ -104,7 +104,7 @@ def test_main_dir() -> None:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
     assert exc.type == SystemExit
-    assert exc.value.code == 22
+    assert exc.value.code == 26
 
     # check directory with scripts, display scripts by score
     args = [

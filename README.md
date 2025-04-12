@@ -116,6 +116,26 @@ which may not be UTF-8 valid. This is a problem in some languages like Python.
 
 **How to fix**: use the signal `irc_out1_xxx`.
 
+### Warning: hook_process_url
+
+**Issue**: the function `hook_process` used with `url:` should be
+replaced by the new function `hook_url` added in WeeChat 4.1.0, which uses
+a thread instead of a new process, making it more lightweight and thus
+recommended for this usage.
+
+**How to fix**: call the function `hook_url` and make necessary changes
+in code, as the function is different from `hook_process`.
+
+### Warning: hook_process_hashtable_url
+
+**Issue**: the function `hook_process_hashtable` used with `url:` should be
+replaced by the new function `hook_url` added in WeeChat 4.1.0, which uses
+a thread instead of a new process, making it more lightweight and thus
+recommended for this usage.
+
+**How to fix**: call the function `hook_url` and make necessary changes
+in code, as the function is different from `hook_process_hashtable`.
+
 ### Info: unneeded_shebang
 
 **Issue**: the shebang is not needed, except if the script can be called

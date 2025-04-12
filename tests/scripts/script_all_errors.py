@@ -22,4 +22,6 @@ if __name__ == "__main__":
         weechat.hook_modifier("irc_in_privmsg", "callback", "")
         weechat.hook_signal("*,irc_out_privmsg", "callback", "")
         weechat.hook_signal("*,irc_outtags_privmsg", "callback", "")
+        weechat.hook_process("url:http://localhost:1234", 1000, "callback", "")
+        weechat.hook_process_hashtable("url:http://localhost:1234", {}, 1000, "callback", "")
         sys.exit(1)
