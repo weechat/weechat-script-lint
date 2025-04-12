@@ -369,14 +369,14 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             "hook_process_hashtable", r"[\"']url:"
         )
         if func_process:
-            for line_no, m in func_process:
+            for line_no, _ in func_process:
                 self.message(
                     "warning",
                     "hook_process_url",
                     line=line_no,
                 )
         if func_process_hashtable:
-            for line_no, m in func_process_hashtable:
+            for line_no, _ in func_process_hashtable:
                 self.message(
                     "warning",
                     "hook_process_hashtable_url",
