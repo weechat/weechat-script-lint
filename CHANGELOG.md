@@ -6,14 +6,14 @@
 
 - Remove warnings on deprecated infos `irc_nick_color` and `irc_nick_color_name` (used again with WeeChat >= 4.1.0)
 
+### Changed
+
+- Improve regex to detect e-mails
+
 ### Added
 
 - Add warnings `hook_process_url` and `hook_process_hashtable_url`
 - Add infos `missing_spdx_copyright` and `missing_spdx_license`
-
-### Changed
-
-- Improve regex to detect e-mails
 
 ## Version 0.5.1 (2022-11-11)
 
