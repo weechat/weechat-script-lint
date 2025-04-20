@@ -1,6 +1,6 @@
 # weechat-script-lint ChangeLog
 
-## Version 0.6.0 (under dev)
+## Version 0.6.0 (2025-04-20)
 
 ### Removed
 
