@@ -35,6 +35,11 @@ levels:
   is a minor problem, the script should be fixed
 - `info`: information; no urgent fix needed.
 
+The default and highest score is 100. Each error, warning or info described
+below decreases the score, according to its severity.
+
+The resulting score is displayed for each script checked.
+
 ### Error: missing_email
 
 **Score**: -15
