@@ -37,12 +37,16 @@ levels:
 
 ### Error: missing_email
 
+**Score**: -15
+
 **Issue**: the e-mail is required if the script is submitted in the official
 scripts repository (error can be ignored in other cases).
 
 **How to fix**: add a contact e-mail in the header of the script.
 
 ### Error: missing_infolist_free
+
+**Score**: -20
 
 **Issue**: when an infolist is asked to WeeChat with `infolist_get`, it must
 always be freed by a call to `infolist_free`, otherwise this causes a memory leak.
@@ -51,6 +55,8 @@ always be freed by a call to `infolist_free`, otherwise this causes a memory lea
 `infolist_get`.
 
 ### Error: python2_bin (Python script only)
+
+**Score**: -25
 
 **Issue**: the info `python2_bin` is used to find the path to Python 2.x
 interpreter. Since WeeChat is compiled with Python 3 and that all scripts aim
@@ -63,11 +69,15 @@ or [hook_process_hashtable](https://weechat.org/files/doc/stable/weechat_plugin_
 
 ### Error: mixed_tabs_spaces (Python script only)
 
+**Score**: -25
+
 **Issue**: mixed tabs and spaces are used for indentation.
 
 **How to fix**: replace all tabs by spaces for indentation.
 
 ### Warning: sys_exit (Python script only)
+
+**Score**: -10
 
 **Issue**: the function `sys.exit()` causes WeeChat to exit itself, so it
 must not be used in scripts.\
@@ -81,6 +91,8 @@ consider setting a variable instead that will prevent the call to
 
 ### Warning: deprecated_hook_completion_get_string
 
+**Score**: -8
+
 **Issue**: the function `hook_completion_get_string` is deprecated and should
 not be used any more since WeeChat 2.9.
 
@@ -88,12 +100,16 @@ not be used any more since WeeChat 2.9.
 
 ### Warning: deprecated_hook_completion_list_add
 
+**Score**: -8
+
 **Issue**: the function `hook_completion_list_add` is deprecated and should
 not be used any more since WeeChat 2.9.
 
 **How to fix**: call the function `completion_list_add`.
 
 ### Warning: modifier_irc_in
+
+**Score**: -10
 
 **Issue**: the modifier `irc_in_xxx` sends the raw IRC message to the callback
 which may not be UTF-8 valid. This is a problem in some languages like Python.
@@ -104,6 +120,8 @@ to receive invalid UTF-8 data.
 
 ### Warning: signal_irc_out
 
+**Score**: -10
+
 **Issue**: the signal `irc_out_xxx` sends the raw IRC message to the callback
 which may not be UTF-8 valid. This is a problem in some languages like Python.
 
@@ -111,12 +129,16 @@ which may not be UTF-8 valid. This is a problem in some languages like Python.
 
 ### Warning: signal_irc_outtags
 
+**Score**: -10
+
 **Issue**: the signal `irc_outtags_xxx` sends the raw IRC message to the callback
 which may not be UTF-8 valid. This is a problem in some languages like Python.
 
 **How to fix**: use the signal `irc_out1_xxx`.
 
 ### Warning: hook_process_url
+
+**Score**: -5
 
 **Issue**: the function `hook_process` used with `url:` should be
 replaced by the new function `hook_url` added in WeeChat 4.1.0, which uses
@@ -128,6 +150,8 @@ in code, as the function is different from `hook_process`.
 
 ### Warning: hook_process_hashtable_url
 
+**Score**: -5
+
 **Issue**: the function `hook_process_hashtable` used with `url:` should be
 replaced by the new function `hook_url` added in WeeChat 4.1.0, which uses
 a thread instead of a new process, making it more lightweight and thus
@@ -138,12 +162,16 @@ in code, as the function is different from `hook_process_hashtable`.
 
 ### Info: unneeded_shebang
 
+**Score**: -1
+
 **Issue**: the shebang is not needed, except if the script can be called
 outside WeeChat, which is rare.
 
 **How to fix**: remove the shebang, unless it is really needed.
 
 ### Info: url_weechat
+
+**Score**: -1
 
 **Issue**: the WeeChat site URL is not the official one.
 
@@ -152,6 +180,8 @@ outside WeeChat, which is rare.
 
 ### Info: missing_spdx_copyright
 
+**Score**: -1
+
 **Issue**: the copyright tag `SPDX-FileCopyrightText` is missing in the script header.
 
 **How to fix**: add the [SPDX](https://spdx.dev/) copyright tag `SPDX-FileCopyrightText`
@@ -159,6 +189,8 @@ in the script header
 (see [Scripting contributing guide](https://github.com/weechat/scripts/blob/main/CONTRIBUTING.md#copyright-and-license)).
 
 ### Info: missing_spdx_license
+
+**Score**: -1
 
 **Issue**: the license tag `SPDX-License-Identifier` is missing in the script header.
 
