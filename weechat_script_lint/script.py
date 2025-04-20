@@ -359,7 +359,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_hook_process_url(self) -> None:
         """Check if hook_process(_hashtable) with "url:" is used."""
-        func_url = self.search_regex("hook_url")
+        func_url = self.search_regex(r"hook_url")
         if func_url:
             return
         func_process = self.search_func(
