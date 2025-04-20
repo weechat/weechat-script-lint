@@ -43,6 +43,8 @@ ALL_ERRORS = [
     ("warning", 26, "hook_process_hashtable_url"),
     ("info", 1, "unneeded_shebang"),
     ("info", 13, "url_weechat"),
+    ("info", 1, "missing_spdx_copyright"),
+    ("info", 1, "missing_spdx_license"),
 ]
 
 
@@ -83,7 +85,7 @@ def test_script_all_errors() -> None:
     assert str(script)
     assert len(str(script).split("\n")) == len(ALL_ERRORS)
     print(script.count)
-    assert script.count == {"error": 4, "warning": 8, "info": 2}
+    assert script.count == {"error": 4, "warning": 8, "info": 4}
     errors = [(msg.level, msg.line, msg.msg_name) for msg in script.messages]
     assert errors == ALL_ERRORS
     assert len(script.get_report(False).split("\n")) == len(ALL_ERRORS)
@@ -102,7 +104,7 @@ def test_script_all_errors() -> None:
     script.check()
     assert str(script)
     assert len(str(script).split("\n")) == len(ALL_ERRORS) - 2
-    assert script.count == {"error": 3, "warning": 7, "info": 2}
+    assert script.count == {"error": 3, "warning": 7, "info": 4}
     assert len(script.get_report(False).split("\n")) == len(ALL_ERRORS) - 2
     assert script.get_report(True) == "script_all_errors.py"
 
@@ -121,6 +123,6 @@ def test_script_empty_file() -> None:
     assert script.script == ""
     script.check()
     assert str(script)
-    assert script.count == {"error": 1, "warning": 0, "info": 0}
-    assert len(script.get_report(False).split("\n")) == 1
+    assert script.count == {"error": 1, "warning": 0, "info": 2}
+    assert len(script.get_report(False).split("\n")) == 3
     assert script.get_report(True) == "script_empty.py"

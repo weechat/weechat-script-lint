@@ -110,6 +110,14 @@ MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
             -1,
             "URL {link} should be changed to https://weechat.org",
         ),
+        "missing_spdx_copyright": (
+            -1,
+            "copyright tag \"SPDX-FileCopyrightText\" is missing",
+        ),
+        "missing_spdx_license": (
+            -1,
+            "license tag \"SPDX-License-Identifier\" is missing",
+        ),
     },
 }
 
@@ -401,6 +409,13 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             self.message(
                 "info", "url_weechat", line=line_no, link=m.group()
             )
+
+    def _check_spdx_tags(self) -> None:
+        """Check if SPDX tags are present."""
+        if not self.search_regex(r"SPDX-FileCopyrightText:"):
+            self.message("info", "missing_spdx_copyright")
+        if not self.search_regex(r"SPDX-License-Identifier:"):
+            self.message("info", "missing_spdx_license")
 
     # run all checks, display report
 

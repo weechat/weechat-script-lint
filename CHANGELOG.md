@@ -9,6 +9,7 @@
 ### Added
 
 - Add warnings `hook_process_url` and `hook_process_hashtable_url`
+- Add infos `missing_spdx_copyright` and `missing_spdx_license`
 
 ### Changed
 
