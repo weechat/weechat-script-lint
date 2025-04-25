@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 # weechat-script-lint ChangeLog
 
 ## Version 0.6.0 (2025-04-20)
