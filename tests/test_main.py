@@ -42,7 +42,6 @@ def test_main_no_scripts() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 2
 
     # display help
@@ -50,7 +49,6 @@ def test_main_no_scripts() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 0
 
 
@@ -63,7 +61,6 @@ def test_main_script() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert "FATAL" in exc.value.code  # type: ignore
 
     # check script OK
@@ -72,7 +69,6 @@ def test_main_script() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 0
 
 
@@ -89,7 +85,6 @@ def test_main_dir() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 10
 
     # check directory with scripts, treat warnings as errors
@@ -103,7 +98,6 @@ def test_main_dir() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 26
 
     # check directory with scripts, display scripts by score
@@ -117,7 +111,6 @@ def test_main_dir() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 10
 
     args = [
@@ -131,7 +124,6 @@ def test_main_dir() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 9
 
     # check a script returning only a warning
@@ -144,7 +136,6 @@ def test_main_dir() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 0
 
     # check a script returning only an info
@@ -157,7 +148,6 @@ def test_main_dir() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 0
 
     # check a file that isn't a WeeChat script
@@ -166,7 +156,6 @@ def test_main_dir() -> None:
     with pytest.raises(SystemExit) as exc:
         with mock.patch.object(sys, "argv", args):
             weechat_script_lint.main()
-    assert exc.type == SystemExit
     assert exc.value.code == 0
 
 
@@ -181,5 +170,4 @@ def test_init() -> None:
             ):
                 with mock.patch.object(sys, "argv", args):
                     weechat_script_lint.init(force=True)
-    assert exc.type == SystemExit
     assert exc.value.code == 0
