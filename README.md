@@ -191,6 +191,7 @@ outside WeeChat, which is rare.
 
 ### Info: missing_spdx_copyright
 
+<!-- REUSE-IgnoreStart -->
 **Score**: -1
 
 **Issue**: the copyright tag `SPDX-FileCopyrightText` is missing in the script header.
@@ -198,9 +199,11 @@ outside WeeChat, which is rare.
 **How to fix**: add the [SPDX](https://spdx.dev/) copyright tag `SPDX-FileCopyrightText`
 in the script header
 (see [Scripting contributing guide](https://github.com/weechat/scripts/blob/main/CONTRIBUTING.md#copyright-and-license)).
+<!-- REUSE-IgnoreEnd -->
 
 ### Info: missing_spdx_license
 
+<!-- REUSE-IgnoreStart -->
 **Score**: -1
 
 **Issue**: the license tag `SPDX-License-Identifier` is missing in the script header.
@@ -208,6 +211,7 @@ in the script header
 **How to fix**: add the [SPDX](https://spdx.dev/) license tag `SPDX-License-Identifier`
 in the script header
 (see [Scripting contributing guide](https://github.com/weechat/scripts/blob/main/CONTRIBUTING.md#copyright-and-license)).
+<!-- REUSE-IgnoreEnd -->
 
 ## Example
 

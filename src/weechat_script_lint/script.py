@@ -100,6 +100,7 @@ MESSAGES: dict[str, dict[str, tuple[int, str]]] = {
             -1,
             "URL {link} should be changed to https://weechat.org",
         ),
+        # REUSE-IgnoreStart
         "missing_spdx_copyright": (
             -1,
             "copyright tag 'SPDX-FileCopyrightText' is missing",
@@ -108,6 +109,7 @@ MESSAGES: dict[str, dict[str, tuple[int, str]]] = {
             -1,
             "license tag 'SPDX-License-Identifier' is missing",
         ),
+        # REUSE-IgnoreEnd
     },
 }
 
@@ -382,10 +384,12 @@ class WeechatScript:
 
     def _check_spdx_tags(self) -> None:
         """Check if SPDX tags are present."""
+        # REUSE-IgnoreStart
         if not self.search_regex(r"SPDX-FileCopyrightText:"):
             self.message("info", "missing_spdx_copyright")
         if not self.search_regex(r"SPDX-License-Identifier:"):
             self.message("info", "missing_spdx_license")
+        # REUSE-IgnoreEnd
 
     # run all checks, display report
 
