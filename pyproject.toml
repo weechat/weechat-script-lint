@@ -56,12 +56,8 @@ select = ["ALL"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 "tests/*.py" = [
-    "ANN001",
-    # at least this three should be fine in tests:
-    "S101", # asserts allowed in tests...
-    "ARG", # Unused function args -> fixtures nevertheless are functionally relevant...
-    "FBT", # Don't care about booleans as positional arguments in tests, e.g. via @pytest.mark.parametrize()
-    # The below are debateable
-    "PLR2004", # Magic value used in comparison, ...
-    "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
+    "ANN001", # missing-type-function-argument
+    "FBT", # flake8-boolean-trap
+    "PLR2004", # magic-value-comparison
+    "S101", # assert
 ]
