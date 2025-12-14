@@ -24,7 +24,7 @@
 # ruff: noqa: FBT001,FBT002,T201
 
 import argparse
-import importlib
+import importlib.metadata
 import pathlib
 import sys
 from collections.abc import Generator
