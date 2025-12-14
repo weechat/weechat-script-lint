@@ -48,7 +48,7 @@ dev = [
 line-length = 120
 indent-width = 4
 extend-exclude = [
-    "tests/scripts/*.py",
+    "tests/scripts/**/*.py",
 ]
 
 [tool.ruff.lint]
