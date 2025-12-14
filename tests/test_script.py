@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
 #
@@ -24,7 +23,7 @@
 
 from pathlib import Path
 
-from weechat_script_lint import WeechatScript
+from weechat_script_lint.script import WeechatScript
 
 SCRIPTS_DIR = Path(__file__).resolve().parent / "scripts"
 
@@ -84,7 +83,6 @@ def test_script_all_errors() -> None:
     script.check()
     assert str(script)
     assert len(str(script).split("\n")) == len(ALL_ERRORS)
-    print(script.count)
     assert script.count == {"error": 4, "warning": 8, "info": 4}
     errors = [(msg.level, msg.line, msg.msg_name) for msg in script.messages]
     assert errors == ALL_ERRORS

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
 #
@@ -22,12 +21,21 @@
 
 """Tests on utility functions."""
 
-from weechat_script_lint import color
+from weechat_script_lint.utils import color, no_color
 
 
-def test_color() -> None:  # pylint: disable=too-many-statements
+def test_color() -> None:
     """Test color function."""
     assert color("", "") == ""
     assert color("test", "") == "test"
     assert color("test", "red") == "\x1b[31mtest\x1b[0m"
     assert color("test", "red,bold") == "\x1b[31m\x1b[1mtest\x1b[0m"
+
+
+def test_no_color() -> None:
+    """Test color function."""
+    assert no_color("") == ""
+    assert no_color("", "") == ""
+    assert no_color("test") == "test"
+    assert no_color("test", "") == "test"
+    assert no_color("test", "red") == "test"

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
 #
@@ -22,13 +21,7 @@
 
 """Utility functions."""
 
-from typing import Dict
-
-__all__ = (
-    "color",
-)
-
-COLORS: Dict[str, str] = {
+COLORS: dict[str, str] = {
     "black": "30",
     "red": "31",
     "green": "32",
@@ -45,8 +38,7 @@ COLORS: Dict[str, str] = {
 
 
 def color(text: str, colors: str) -> str:
-    """
-    Return a colored string (with ANSI codes).
+    """Return a colored string (with ANSI codes).
 
     :param text: the text
     :param colors: comma-separated list of colors/attributes
@@ -55,7 +47,10 @@ def color(text: str, colors: str) -> str:
     """
     if not colors:
         return text
-    attrs = []
-    for color_name in colors.split(","):
-        attrs.append(f"\033[{COLORS.get(color_name, '')}m")
-    return f"{''.join(attrs)}{str(text)}\033[{COLORS['reset_props']}m"
+    attrs = [f"\033[{COLORS.get(color_name, '')}m" for color_name in colors.split(",")]
+    return f"{''.join(attrs)}{text}\033[{COLORS['reset_props']}m"
+
+
+def no_color(text: str, *args: str) -> str:  # noqa: ARG001
+    """Return text as-is."""
+    return text

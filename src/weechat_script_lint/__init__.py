@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
 #
@@ -22,6 +21,9 @@
 
 """Static analysis tool for WeeChat scripts."""
 
-from weechat_script_lint.main import *  # noqa
-from weechat_script_lint.script import *  # noqa
-from weechat_script_lint.utils import *  # noqa
+from weechat_script_lint.lint import lint
+
+
+def main() -> None:
+    """Run weechat-script-lint."""
+    lint()

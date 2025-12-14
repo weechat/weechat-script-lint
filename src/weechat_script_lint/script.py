@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
 #
@@ -22,7 +21,7 @@
 
 """WeeChat script linter."""
 
-from typing import Dict, List, Tuple
+# ruff: noqa: FBT001,FBT002
 
 import inspect
 import pathlib
@@ -30,18 +29,14 @@ import re
 
 from weechat_script_lint.utils import color
 
-__all__ = (
-    "WeechatScript",
-)
-
-LEVEL_LABELS: Dict[str, str] = {
+LEVEL_LABELS: dict[str, str] = {
     "error": "bold,red",
     "warning": "bold,yellow",
     "info": "bold,green",
 }
 
 # format: level -> error: (score, message)
-MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
+MESSAGES: dict[str, dict[str, tuple[int, str]]] = {
     "error": {
         "missing_email": (
             -15,
@@ -77,28 +72,23 @@ MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
         ),
         "modifier_irc_in": (
             -10,
-            "modifier irc_in_{message} should be replaced by "
-            "irc_in2_{message} which sends only valid UTF-8 data",
+            "modifier irc_in_{message} should be replaced by irc_in2_{message} which sends only valid UTF-8 data",
         ),
         "signal_irc_out": (
             -10,
-            "signal irc_out_{message} should be replaced by "
-            "irc_out1_{message} which sends only valid UTF-8 data",
+            "signal irc_out_{message} should be replaced by irc_out1_{message} which sends only valid UTF-8 data",
         ),
         "signal_irc_outtags": (
             -10,
-            "signal irc_outtags_{message} should be replaced by "
-            "irc_out1_{message} which sends only valid UTF-8 data",
+            "signal irc_outtags_{message} should be replaced by irc_out1_{message} which sends only valid UTF-8 data",
         ),
         "hook_process_url": (
             -5,
-            "function hook_process with \"url:\" should be replaced "
-            "by hook_url (WeeChat ≥ 4.1.0)",
+            "function hook_process with 'url:' should be replaced by hook_url (WeeChat ≥ 4.1.0)",
         ),
         "hook_process_hashtable_url": (
             -5,
-            "function hook_process_hashtable with \"url:\" should be replaced "
-            "by hook_url (WeeChat ≥ 4.1.0)",
+            "function hook_process_hashtable with 'url:' should be replaced by hook_url (WeeChat ≥ 4.1.0)",
         ),
     },
     "info": {
@@ -112,11 +102,11 @@ MESSAGES: Dict[str, Dict[str, Tuple[int, str]]] = {
         ),
         "missing_spdx_copyright": (
             -1,
-            "copyright tag \"SPDX-FileCopyrightText\" is missing",
+            "copyright tag 'SPDX-FileCopyrightText' is missing",
         ),
         "missing_spdx_license": (
             -1,
-            "license tag \"SPDX-License-Identifier\" is missing",
+            "license tag 'SPDX-License-Identifier' is missing",
         ),
     },
 }
@@ -129,11 +119,11 @@ EMAIL_REGEX = re.compile(
     #   some.name AT domain.org
     #   some.name [at] domain [dot] org
     r"("
-    r"[*#a-z0-9_.+-]+ ?"             # some.name
-    r"(@|[\[({ ] *at[\])} ] *) ?"    # "@", "[at]", " AT "
-    r"[*#a-z0-9-]+ ?"                # domain
+    r"[*#a-z0-9_.+-]+ ?"  # some.name
+    r"(@|[\[({ ] *at[\])} ] *) ?"  # "@", "[at]", " AT "
+    r"[*#a-z0-9-]+ ?"  # domain
     r"(\.|[\[({ ] *dot[\])} ] *) ?"  # ".", "[dot]", " DOT "
-    r"[a-z0-9-.]+)"                  # org
+    r"[a-z0-9-.]+)"  # org
     r"|"
     # <some.email>
     r"(<[a-z0-9_.+-]+>)",
@@ -141,7 +131,7 @@ EMAIL_REGEX = re.compile(
 )
 
 
-class ScriptMessage:  # pylint: disable=too-few-public-methods
+class ScriptMessage:
     """A script message (error/warning/info)."""
 
     def __init__(
@@ -152,6 +142,7 @@ class ScriptMessage:  # pylint: disable=too-few-public-methods
         line: int,
         **kwargs: str,
     ) -> None:
+        """Initialize a script message."""
         self.path: pathlib.Path = path
         self.level: str = level
         self.msg_name: str = msg_name
@@ -161,18 +152,11 @@ class ScriptMessage:  # pylint: disable=too-few-public-methods
 
     def as_str(self, use_colors: bool = True) -> str:
         """Return formatted message."""
-        label = (
-            color(self.level, LEVEL_LABELS[self.level])
-            if use_colors
-            else self.level
-        )
-        return (
-            f"{self.path}:{self.line}: {label} [{self.msg_name}]: "
-            f"{self.text}"
-        )
+        label = color(self.level, LEVEL_LABELS[self.level]) if use_colors else self.level
+        return f"{self.path}:{self.line}: {label} [{self.msg_name}]: {self.text}"
 
 
-class WeechatScript:  # pylint: disable=too-many-instance-attributes
+class WeechatScript:
     """A WeeChat script."""
 
     def __init__(
@@ -182,36 +166,34 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         msg_level: str = "info",
         use_colors: bool = True,
     ) -> None:
+        """Initialize a WeeChat script."""
         self.path: pathlib.Path = path.resolve()
-        self.ignored_msg = [
-            code.strip() for code in ignore.split(",") if code
-        ]
+        self.ignored_msg = [code.strip() for code in ignore.split(",") if code]
         self.msg_level: int = list(LEVEL_LABELS.keys()).index(msg_level)
         self.use_colors: bool = use_colors
-        self.messages: List[ScriptMessage] = []
-        self.count: Dict[str, int] = {label: 0 for label in LEVEL_LABELS}
+        self.messages: list[ScriptMessage] = []
+        self.count: dict[str, int] = dict.fromkeys(LEVEL_LABELS, 0)
         self.script: str = self.path.read_text()
         self.score = 100
 
     def __str__(self) -> str:
         """Return string with warnings/errors found."""
-        return "\n".join(
-            [msg.as_str(use_colors=self.use_colors) for msg in self.messages]
-        )
+        return "\n".join([msg.as_str(use_colors=self.use_colors) for msg in self.messages])
 
     def message(
-        self, level: str, msg_name: str, line: int = 1, **kwargs: str
+        self,
+        level: str,
+        msg_name: str,
+        line: int = 1,
+        **kwargs: str,
     ) -> None:
-        """
-        Add a message in the list of messages.
+        """Add a message in the list of messages.
 
         :param level: type of message: "error", "warning", "info"
         :param msg_name: short name of message to display
         :param line: line number
         """
-        if msg_name in self.ignored_msg or self.msg_level < list(
-            LEVEL_LABELS.keys()
-        ).index(level):
+        if msg_name in self.ignored_msg or self.msg_level < list(LEVEL_LABELS.keys()).index(level):
             return
         msg = ScriptMessage(self.path, level, msg_name, line, **kwargs)
         self.messages.append(msg)
@@ -219,10 +201,13 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         self.score = max(0, self.score + msg.score)
 
     def search_regex(
-        self, regex: str, flags: int = 0, max_lines: int = 1
-    ) -> List[Tuple[int, re.Match]]:
-        """
-        Search a regular expression in each line of the script.
+        self,
+        regex: str,
+        flags: int = 0,
+        max_lines: int = 1,
+    ) -> list[tuple[int, re.Match]]:
+        """Search a regular expression in each line of the script.
+
         A same line can be returned multiple times, if the string appears
         more than one time in the line.
 
@@ -246,9 +231,8 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         argument: str = "",
         flags: int = 0,
         max_lines: int = 2,
-    ) -> List[Tuple[int, re.Match]]:
-        """
-        Search a call to a function with the given argument.
+    ) -> list[tuple[int, re.Match]]:
+        """Search a call to a function with the given argument.
 
         :param function: function (regex)
         :param argument: argument (regex)
@@ -256,7 +240,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         :param max_lines: max number of lines in each string found
         :return: list of tuples: (line_number, match)
         """
-        regex = fr"{function}[\s,(]*{argument}"
+        regex = rf"{function}[\s,(]*{argument}"
         return self.search_regex(regex, flags=flags, max_lines=max_lines)
 
     # === errors ===
@@ -278,9 +262,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
     def _check_python2_bin(self) -> None:
         """Check if the info "python2_bin" is used."""
         if self.path.suffix == ".py":
-            python2_bin = self.search_func(
-                "info_get", r"[\"']python2_bin[\"']"
-            )
+            python2_bin = self.search_func("info_get", r"[\"']python2_bin[\"']")
             for line_no, _ in python2_bin:
                 self.message("error", "python2_bin", line=line_no)
 
@@ -331,9 +313,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_modifier_irc_in(self) -> None:
         """Check if modifier irc_in_xxx is used."""
-        func = self.search_func(
-            "hook_modifier", r"[\"']irc_in_([^\"']+)[\"']"
-        )
+        func = self.search_func("hook_modifier", r"[\"']irc_in_([^\"']+)[\"']")
         for line_no, m in func:
             self.message(
                 "warning",
@@ -344,9 +324,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
 
     def _check_signals_irc_out(self) -> None:
         """Check if signals irc_out_xxx or irc_outtags_xxx are used."""
-        func = self.search_func(
-            "hook_signal", r"[\"'][^\"']+,irc_out_([^\"']+)[\"']"
-        )
+        func = self.search_func("hook_signal", r"[\"'][^\"']+,irc_out_([^\"']+)[\"']")
         for line_no, m in func:
             self.message(
                 "warning",
@@ -354,9 +332,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
                 line=line_no,
                 message=m.group(1),
             )
-        func = self.search_func(
-            "hook_signal", r"[\"'][^\"']+,irc_outtags_([^\"']+)[\"']"
-        )
+        func = self.search_func("hook_signal", r"[\"'][^\"']+,irc_outtags_([^\"']+)[\"']")
         for line_no, m in func:
             self.message(
                 "warning",
@@ -370,12 +346,8 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
         func_url = self.search_regex(r"hook_url")
         if func_url:
             return
-        func_process = self.search_func(
-            "hook_process", r"[\"']url:"
-        )
-        func_process_hashtable = self.search_func(
-            "hook_process_hashtable", r"[\"']url:"
-        )
+        func_process = self.search_func("hook_process", r"[\"']url:")
+        func_process_hashtable = self.search_func("hook_process_hashtable", r"[\"']url:")
         if func_process:
             for line_no, _ in func_process:
                 self.message(
@@ -406,9 +378,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
             flags=re.IGNORECASE,
         )
         for line_no, m in links:
-            self.message(
-                "info", "url_weechat", line=line_no, link=m.group()
-            )
+            self.message("info", "url_weechat", line=line_no, link=m.group())
 
     def _check_spdx_tags(self) -> None:
         """Check if SPDX tags are present."""
@@ -428,8 +398,7 @@ class WeechatScript:  # pylint: disable=too-many-instance-attributes
                 method()
 
     def get_report(self, name_only: bool = False) -> str:
-        """
-        Print report, if any.
+        """Print report, if any.
 
         :param name_only: display only the name of script
         :return: report as string

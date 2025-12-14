@@ -18,7 +18,7 @@ executed in the CI of the WeeChat official scripts repository:
 
 ## Installation
 
-The script requires Python ≥ 3.7.
+The script requires Python ≥ 3.9.
 
 In a Python virtual environment:
 

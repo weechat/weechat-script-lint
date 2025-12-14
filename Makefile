@@ -23,20 +23,13 @@ all: check
 
 check: lint test
 
-lint: flake8 pylint mypy bandit
+lint: ruff mypy
 
-flake8:
-	flake8 weechat_script_lint tests/*.py --count --select=E9,F63,F7,F82 --ignore=E203,W503 --show-source --statistics
-	flake8 weechat_script_lint tests/*.py --count --ignore=E203,W503 --exit-zero --max-complexity=10 --statistics
-
-pylint:
-	pylint weechat_script_lint tests/*.py
+ruff:
+	uvx ruff check
 
 mypy:
-	mypy weechat_script_lint tests/*.py
-
-bandit:
-	bandit -r weechat_script_lint
+	uvx mypy src
 
 test:
-	pytest -vv --cov-report term-missing --cov=weechat_script_lint tests
+	uv run pytest -vv --cov=weechat_script_lint --cov-report=term-missing

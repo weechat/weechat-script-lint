@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 #
 # SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
 #
@@ -22,59 +21,55 @@
 
 """Tests on main/init functions."""
 
+import sys
 from pathlib import Path
 
-import sys
-
-import mock
 import pytest
 
 import weechat_script_lint
+from weechat_script_lint.lint import get_status_color
 
 SCRIPTS_DIR = Path(__file__).resolve().parent / "scripts"
 
 
-def test_main_no_scripts() -> None:
+def test_main_no_scripts(monkeypatch) -> None:
     """Test main function without scripts."""
-
     # no argument
     args = ["weechat-script-lint"]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 2
 
     # display help
     args = ["weechat-script-lint", "--help"]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 0
 
 
-def test_main_script() -> None:
+def test_main_script(monkeypatch) -> None:
     """Test main function with a single script."""
-
     # script not found
     filename = str(SCRIPTS_DIR / "unknown.py")
     args = ["weechat-script-lint", filename]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
-    assert "FATAL" in exc.value.code  # type: ignore
+        weechat_script_lint.main()
+    assert "FATAL" in exc.value.code
 
     # check script OK
     filename = str(SCRIPTS_DIR / "script_valid.py")
     args = ["weechat-script-lint", filename]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 0
 
 
-def test_main_dir() -> None:
+def test_main_dir(monkeypatch) -> None:
     """Test main function with a directory."""
-
     # check directory with scripts
     args = [
         "weechat-script-lint",
@@ -82,9 +77,9 @@ def test_main_dir() -> None:
         "--recursive",
         str(SCRIPTS_DIR),
     ]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 10
 
     # check directory with scripts, treat warnings as errors
@@ -95,9 +90,9 @@ def test_main_dir() -> None:
         "--recursive",
         str(SCRIPTS_DIR),
     ]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 26
 
     # check directory with scripts, display scripts by score
@@ -108,9 +103,9 @@ def test_main_dir() -> None:
         "--recursive",
         str(SCRIPTS_DIR),
     ]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 10
 
     args = [
@@ -121,9 +116,9 @@ def test_main_dir() -> None:
         "--recursive",
         str(SCRIPTS_DIR),
     ]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 9
 
     # check a script returning only a warning
@@ -133,9 +128,9 @@ def test_main_dir() -> None:
         "--verbose",
         filename,
     ]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 0
 
     # check a script returning only an info
@@ -145,29 +140,24 @@ def test_main_dir() -> None:
         "--verbose",
         filename,
     ]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 0
 
     # check a file that isn't a WeeChat script
     filename = str(SCRIPTS_DIR / "not_a_script.txt")
     args = ["weechat-script-lint", "--verbose", filename]
+    monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(sys, "argv", args):
-            weechat_script_lint.main()
+        weechat_script_lint.main()
     assert exc.value.code == 0
 
 
-def test_init() -> None:
-    """Test init function."""
-    filename = str(SCRIPTS_DIR / "script_valid.py")
-    args = ["weechat-script-lint", filename]
-    with pytest.raises(SystemExit) as exc:
-        with mock.patch.object(weechat_script_lint, "main", return_value=0):
-            with mock.patch.object(
-                weechat_script_lint, "__name__", "__main__"
-            ):
-                with mock.patch.object(sys, "argv", args):
-                    weechat_script_lint.init(force=True)
-    assert exc.value.code == 0
+def test_get_status_color() -> None:
+    """Test function get_status_color."""
+    assert get_status_color(-1) == ""
+    assert get_status_color(101) == ""
+    assert get_status_color(0) != ""
+    assert get_status_color(100) != ""
+    assert get_status_color(0) != get_status_color(80) != get_status_color(100)
