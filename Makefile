@@ -29,7 +29,7 @@ ruff:
 	uvx ruff check
 
 mypy:
-	uvx mypy src
+	uvx mypy --strict src
 
 test:
 	uv run pytest -vv --cov=weechat_script_lint --cov-report=term-missing

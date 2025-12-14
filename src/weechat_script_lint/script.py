@@ -207,7 +207,7 @@ class WeechatScript:
         regex: str,
         flags: int = 0,
         max_lines: int = 1,
-    ) -> list[tuple[int, re.Match]]:
+    ) -> list[tuple[int, re.Match[str]]]:
         """Search a regular expression in each line of the script.
 
         A same line can be returned multiple times, if the string appears
@@ -233,7 +233,7 @@ class WeechatScript:
         argument: str = "",
         flags: int = 0,
         max_lines: int = 2,
-    ) -> list[tuple[int, re.Match]]:
+    ) -> list[tuple[int, re.Match[str]]]:
         """Search a call to a function with the given argument.
 
         :param function: function (regex)
