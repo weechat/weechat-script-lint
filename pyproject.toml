@@ -61,3 +61,8 @@ select = ["ALL"]
     "PLR2004", # magic-value-comparison
     "S101", # assert
 ]
+
+[tool.ty.src]
+exclude = [
+    "tests/scripts/**/*.py",
+]

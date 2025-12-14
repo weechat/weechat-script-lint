@@ -23,13 +23,13 @@ all: check
 
 check: lint test
 
-lint: ruff mypy
+lint: ruff ty
 
 ruff:
 	uvx ruff check
 
-mypy:
-	uvx mypy --strict src
+ty:
+	uvx ty check
 
 test:
 	uv run pytest -vv --cov=weechat_script_lint --cov-report=term-missing

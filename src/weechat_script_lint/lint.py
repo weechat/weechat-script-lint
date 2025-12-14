@@ -256,7 +256,7 @@ def check_scripts(args: argparse.Namespace) -> tuple[int, int]:
     scores: dict[pathlib.Path, int] = {}
     ignored_files = (args.ignore_files or "").split(",")
     for path in args.path:
-        scripts = get_scripts(path, args, ignored_files)
+        scripts = get_scripts(path, args, ignored_files)  # ty: ignore[invalid-argument-type]
         for path_script in scripts:
             # check script
             num_scripts += 1
