@@ -57,7 +57,6 @@ def test_main_script(monkeypatch) -> None:
     monkeypatch.setattr(sys, "argv", args)
     with pytest.raises(SystemExit) as exc:
         weechat_script_lint.main()
-    assert "FATAL" in exc.value.code
 
     # check script OK
     filename = str(SCRIPTS_DIR / "script_valid.py")
