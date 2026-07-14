@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2021-2025 Sébastien Helleu <flashcode@flashtux.org>
+SPDX-FileCopyrightText: 2021-2026 Sébastien Helleu <flashcode@flashtux.org>
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
@@ -244,7 +244,7 @@ $ weechat-script-lint --score --recursive /path/to/directory
 ## Copyright
 
 <!-- REUSE-IgnoreStart -->
-Copyright © 2021-2025 [Sébastien Helleu](https://github.com/flashcode)
+Copyright © 2021-2026 [Sébastien Helleu](https://github.com/flashcode)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
