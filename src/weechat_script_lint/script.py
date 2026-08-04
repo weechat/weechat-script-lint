@@ -62,13 +62,13 @@ MESSAGES: dict[str, dict[str, tuple[int, str]]] = {
         ),
         "deprecated_hook_completion_get_string": (
             -8,
-            "function hook_completion_get_string is deprecated "
-            "since WeeChat 2.9 and must be replaced by completion_get_string",
+            ("function hook_completion_get_string is deprecated "
+            "since WeeChat 2.9 and must be replaced by completion_get_string"),
         ),
         "deprecated_hook_completion_list_add": (
             -8,
-            "function hook_completion_list_add is deprecated "
-            "since WeeChat 2.9 and must be replaced by completion_list_add",
+            ("function hook_completion_list_add is deprecated "
+            "since WeeChat 2.9 and must be replaced by completion_list_add"),
         ),
         "modifier_irc_in": (
             -10,
