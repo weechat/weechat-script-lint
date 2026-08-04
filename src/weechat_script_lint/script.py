@@ -379,7 +379,7 @@ class WeechatScript:
     def check(self) -> None:
         """Perform checks on the script."""
         methods = inspect.getmembers(self, predicate=inspect.ismethod)
-        methods.sort(key=lambda m: m[1].__func__.__code__.co_firstlineno)
+        methods.sort(key=lambda m: m[1].__func__.__code__.co_firstlineno)  # ty: ignore[unresolved-attribute]
         for name, method in methods:
             if name.startswith("_check_"):
                 method()
